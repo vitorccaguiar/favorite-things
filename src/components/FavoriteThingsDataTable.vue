@@ -1,29 +1,62 @@
 <template>
   <v-container>
+    <div v-if="inMainProgress">
+      <v-layout justify-center>
+        <h3> {{ progressMessage }} </h3>
+      </v-layout>
+      <v-progress-linear
+        color="#0191A9"
+        indeterminate
+        rounded
+        height="6">
+      </v-progress-linear>
+    </div>
     <v-toolbar flat color="white">
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn dark color="#0191A9" class="mb-2" v-on="on">New Favorite Thing</v-btn>
+          <v-btn @click="getCategories" dark color="#0191A9" class="mb-2" v-on="on">New Favorite Thing</v-btn>
         </template>
         <v-card>
+          <div v-if="inDialogProgress">
+            <v-layout justify-center>
+              <h3> {{ progressMessage }} </h3>
+            </v-layout>
+            <v-progress-linear
+              color="#0191A9"
+              indeterminate
+              rounded
+              height="6">
+            </v-progress-linear>
+          </div>
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
           </v-card-title>
 
           <v-card-text>
             <v-container grid-list-md>
-              <v-layout wrap>
+              <v-layout column>
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
+                  <v-textarea
+                    v-model="editedItem.description"
+                    auto-grow
+                    counter
+                    height="60px"
+                    label="Description">
+                  </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-model="editedItem.ranking" label="Ranking"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
+                  <v-select
+                    :items="categories"
+                    :item-text="name"
+                    label="Category">
+                  </v-select>
                   <v-text-field v-model="editedItem.category" label="Category"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
@@ -65,7 +98,6 @@
 
 <script>
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 export default {
   data: () => ({
@@ -87,13 +119,14 @@ export default {
       { text: "Actions", value: "name" }
     ],
     favoriteThings: [],
+    categories: [],
     editedIndex: -1,
     editedItem: {
-      title: "",
-      description: "",
-      ranking: 0,
-      category: "",
-      metadata: ""
+      title: null,
+      description: null,
+      ranking: null,
+      category: null,
+      metadata: null
     },
     defaultItem: {
       title: "",
@@ -104,7 +137,10 @@ export default {
       created_date: new Date(),
       modified_date: new Date(),
       audit_log: ""
-    }
+    },
+    inMainProgress: false,
+    inDialogProgress: false,
+    progressMessage: ""
   }),
 
   computed: {
@@ -129,25 +165,40 @@ export default {
     },
 
     getFavoriteThings() {
-      const axiosInstance = axios.create({
-        baseURL: '/api',
-        timeout: 5000,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': Cookies.get('csrftoken')
-        },
-        validateStatus: function(status) {
-          return true;
-        }
-      })
-      axiosInstance.get('/favoritething')
+      this.setMainProgress(true, "Loading Favorite Things...");
+      axios.get('/favoritething')
         .then(response => {
           console.log(response);
           this.favoriteThings = response.data;
+          this.setMainProgress(false, "");
         })
-        .catch(e => {
-          console.error(e);
+        .catch(error => {
+          console.error(error);
+          this.setMainProgress(false, "");
         })
+    },
+
+    getCategories() {
+      this.setDialogProgress(true, "Loading Categories...");
+      axios.get('/category')
+        .then(response => {
+          this.setDialogProgress(false, "");
+          this.categories = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.setDialogProgress(false, "");
+        });
+    },
+
+    setMainProgress(status, message) {
+      this.inMainProgress = status;
+      this.progressMessage = message;
+    },
+
+    setDialogProgress(status, message) {
+      this.inDialogProgress = status;
+      this.progressMessage = message;
     },
 
     editItem(item) {
