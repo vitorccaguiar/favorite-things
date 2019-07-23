@@ -166,7 +166,7 @@ export default {
 
     getFavoriteThings() {
       this.setMainProgress(true, "Loading Favorite Things...");
-      axios.get('/favoritething')
+      axios.get('/api/favoritething')
         .then(response => {
           console.log(response);
           this.favoriteThings = response.data;
@@ -180,7 +180,7 @@ export default {
 
     getCategories() {
       this.setDialogProgress(true, "Loading Categories...");
-      axios.get('/category')
+      axios.get('/api/category')
         .then(response => {
           this.setDialogProgress(false, "");
           this.categories = response.data;
