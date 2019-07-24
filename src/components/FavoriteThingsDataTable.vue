@@ -69,7 +69,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+            <v-btn color="blue darken-1" flat @click="saveFavoriteThing">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -236,6 +236,36 @@ export default {
         })
     },
 
+    saveFavoriteThing() {
+      this.setFavoriteDialogProgress(true, "Saving Favorite Thing...");
+      axios({
+        method: 'post',
+        url: '/api/favoritething/',
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          title: this.editedItem.title,
+          description: this.editedItem.description,
+          ranking: this.editedItem.ranking,
+          category: this.editedItem.category,
+          metadata: this.editedItem.metadata
+        }
+      })
+      .then(response => {
+        this.setFavoriteDialogProgress(false, "");
+        this.setSnackbar(true, "Successfuly created the favorite thing " + response.data.title);
+        this.editedItem.title = null;
+        this.editedItem.description = null;
+        this.editedItem.ranking = null;
+        this.editedItem.category = null;
+        this.editedItem.metadata = null;
+      })
+      .catch(error => {
+        this.setFavoriteDialogProgress(false, "");
+        this.setSnackbar(true, "Failed while creating the favorite thing");
+        console.log(error);
+      });
+    },
+
     getCategories() {
       this.setFavoriteDialogProgress(true, "Loading Categories...");
       axios.get('/api/category')
@@ -250,7 +280,6 @@ export default {
     },
 
     saveCategory() {
-      console.log("Category Name: " + this.category.name);
       this.setCategoryDialogProgress(true, "Saving Category...");
       axios({
         method: 'post',
@@ -263,6 +292,7 @@ export default {
       .then(response => {
         this.setCategoryDialogProgress(false, "");
         this.setSnackbar(true, "Successfuly created the category " + response.data.name);
+        this.category.name = null;
         console.log(response);
       })
       .catch(error => {
