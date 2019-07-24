@@ -13,12 +13,12 @@
     </div>
     <v-toolbar flat color="white">
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="favoriteThingDialog" max-width="500px">
         <template v-slot:activator="{ on }">
           <v-btn @click="getCategories" dark color="#0191A9" class="mb-2" v-on="on">New Favorite Thing</v-btn>
         </template>
         <v-card>
-          <div v-if="inDialogProgress">
+          <div v-if="inFavoriteDialogProgress">
             <v-layout justify-center>
               <h3> {{ progressMessage }} </h3>
             </v-layout>
@@ -73,6 +73,42 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="categoryDialog" max-width="500px">
+        <template v-slot:activator="{ on }">
+          <v-btn dark color="#0191A9" class="mb-2" v-on="on">New Category</v-btn>
+        </template>
+        <v-card>
+          <div v-if="inCategoryDialogProgress">
+            <v-layout justify-center>
+              <h3> {{ progressMessage }} </h3>
+            </v-layout>
+            <v-progress-linear
+              color="#0191A9"
+              indeterminate
+              rounded
+              height="6">
+            </v-progress-linear>
+          </div>
+          <v-card-title>
+            <span class="headline">New Category</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout column>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field v-model="category.name" label="Name" :rules="basicRules" autofocus></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="closeCategoryDialog">Cancel</v-btn>
+            <v-btn color="blue darken-1" flat @click="saveCategory">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-toolbar>
     <v-data-table :headers="headers" :items="favoriteThings" class="elevation-1">
       <template v-slot:items="props">
@@ -93,6 +129,19 @@
         <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>
+    <v-snackbar
+      v-model="snackbar"
+      top
+    >
+      {{ snackbarResult }}
+      <v-btn
+        color="#0191A9"
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -101,7 +150,9 @@ import axios from 'axios';
 
 export default {
   data: () => ({
-    dialog: false,
+    favoriteThingDialog: false,
+    categoryDialog: false,
+    snackbar: false,
     headers: [
       {
         text: "Title",
@@ -138,9 +189,14 @@ export default {
       modified_date: new Date(),
       audit_log: ""
     },
+    category: {
+      name: null
+    },
     inMainProgress: false,
-    inDialogProgress: false,
+    inFavoriteDialogProgress: false,
+    inCategoryDialogProgress: false,
     progressMessage: "",
+    snackbarResult: "",
     basicRules: [
       v => !!v || 'Required field',
     ]
@@ -182,16 +238,38 @@ export default {
     },
 
     getCategories() {
-      this.setDialogProgress(true, "Loading Categories...");
+      this.setFavoriteDialogProgress(true, "Loading Categories...");
       axios.get('/api/category')
         .then(response => {
-          this.setDialogProgress(false, "");
+          this.setFavoriteDialogProgress(false, "");
           this.categories = response.data;
         })
         .catch(error => {
           console.log(error);
-          this.setDialogProgress(false, "");
+          this.setFavoriteDialogProgress(false, "");
         });
+    },
+
+    saveCategory() {
+      this.setCategoryDialogProgress(true, "Saving Category...");
+      axios.post('/api/category', {
+        name: this.category.name,
+      })
+      .then(response => {
+        this.setCategoryDialogProgress(false, "");
+        this.setSnackbar(true, "Successfuly created the category " + response.data.name);
+        console.log(response);
+      })
+      .catch(error => {
+        this.setCategoryDialogProgress(false, "");
+        this.setSnackbar(true, "Failed while creating the category");
+        console.log(error);
+      });
+    },
+
+    setSnackbar(status, message) {
+      this.snackbar = status;
+      this.snackbarResult = message;
     },
 
     setMainProgress(status, message) {
@@ -199,15 +277,20 @@ export default {
       this.progressMessage = message;
     },
 
-    setDialogProgress(status, message) {
-      this.inDialogProgress = status;
+    setFavoriteDialogProgress(status, message) {
+      this.inFavoriteDialogProgress = status;
+      this.progressMessage = message;
+    },
+
+    setCategoryDialogProgress(status, message) {
+      this.inCategoryDialogProgress = status;
       this.progressMessage = message;
     },
 
     editItem(item) {
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+      this.favoriteThingDialog = true;
     },
 
     deleteItem(item) {
@@ -217,7 +300,7 @@ export default {
     },
 
     close() {
-      this.dialog = false;
+      this.favoriteThingDialog = false;
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -231,6 +314,10 @@ export default {
         this.favoriteThings.push(this.editedItem);
       }
       this.close();
+    },
+
+    closeCategoryDialog() {
+      this.categoryDialog = false;
     }
   }
 };
