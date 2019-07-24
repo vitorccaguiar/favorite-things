@@ -37,7 +37,7 @@
             <v-container grid-list-md>
               <v-layout column>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                  <v-text-field v-model="editedItem.title" label="Title" :rules="basicRules" autofocus></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-textarea
@@ -49,15 +49,16 @@
                   </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.ranking" label="Ranking"></v-text-field>
+                  <v-text-field v-model="editedItem.ranking" label="Ranking" :rules="basicRules"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-select
                     :items="categories"
-                    :item-text="name"
-                    label="Category">
+                    item-text="name"
+                    item-value="id"
+                    label="Category"
+                    :rules="basicRules">
                   </v-select>
-                  <v-text-field v-model="editedItem.category" label="Category"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-model="editedItem.metadata" label="Metadata"></v-text-field>
@@ -140,7 +141,10 @@ export default {
     },
     inMainProgress: false,
     inDialogProgress: false,
-    progressMessage: ""
+    progressMessage: "",
+    basicRules: [
+      v => !!v || 'Required field',
+    ]
   }),
 
   computed: {
