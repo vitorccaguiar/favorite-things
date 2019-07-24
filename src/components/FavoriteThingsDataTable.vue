@@ -259,6 +259,7 @@ export default {
         this.editedItem.ranking = null;
         this.editedItem.category = null;
         this.editedItem.metadata = null;
+        this.getFavoriteThings();
       })
       .catch(error => {
         this.setFavoriteDialogProgress(false, "");
