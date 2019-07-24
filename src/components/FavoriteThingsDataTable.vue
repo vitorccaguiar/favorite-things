@@ -44,7 +44,6 @@
                     v-model="editedItem.description"
                     auto-grow
                     counter
-                    height="60px"
                     label="Description">
                   </v-textarea>
                 </v-flex>
