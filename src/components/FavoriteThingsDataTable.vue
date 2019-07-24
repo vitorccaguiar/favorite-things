@@ -248,7 +248,7 @@ export default {
           description: this.editedItem.description,
           ranking: this.editedItem.ranking,
           category: this.editedItem.category,
-          audit_log: null,
+          audit_log: "",
         }
       })
       .then(response => {
