@@ -246,9 +246,9 @@ export default {
         data: {
           title: this.editedItem.title,
           description: this.editedItem.description,
-          ranking: parseInt(this.editedItem.ranking),
-          category: this.editedItem.category,
-          audit_log: "",
+          ranking: this.editedItem.ranking,
+          category_id: this.editedItem.category,
+          audit_log: "Loging",
         }
       })
       .then(response => {
