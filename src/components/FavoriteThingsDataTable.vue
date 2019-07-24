@@ -254,7 +254,7 @@ export default {
       this.setCategoryDialogProgress(true, "Saving Category...");
       axios({
         method: 'post',
-        url: '/api/category',
+        url: '/api/category/',
         headers: {'Content-Type': 'application/json'},
         data: {
           name: this.category.name,
