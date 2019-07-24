@@ -246,7 +246,7 @@ export default {
         data: {
           title: this.editedItem.title,
           description: this.editedItem.description,
-          ranking: this.editedItem.ranking,
+          ranking: parseInt(this.editedItem.ranking),
           category: this.editedItem.category,
           metadata: this.editedItem.metadata
         }
