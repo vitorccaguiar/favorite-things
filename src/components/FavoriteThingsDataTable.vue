@@ -227,7 +227,6 @@ export default {
       this.setMainProgress(true, "Loading Favorite Things...");
       axios.get('/api/favoritething')
         .then(response => {
-          console.log(response);
           this.favoriteThings = response.data;
           this.setMainProgress(false, "");
         })
@@ -251,9 +250,15 @@ export default {
     },
 
     saveCategory() {
+      console.log("Category Name: " + this.category.name);
       this.setCategoryDialogProgress(true, "Saving Category...");
-      axios.post('/api/category', {
-        name: this.category.name,
+      axios({
+        method: 'post',
+        url: '/api/category',
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          name: this.category.name,
+        }
       })
       .then(response => {
         this.setCategoryDialogProgress(false, "");
