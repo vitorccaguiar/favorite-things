@@ -52,6 +52,7 @@
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-select
+                    v-model="editedItem.category"
                     :items="categories"
                     item-text="name"
                     item-value="id"
