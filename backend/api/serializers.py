@@ -5,7 +5,7 @@ import logging
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('id', 'name')
 
 class FavoriteThingSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
