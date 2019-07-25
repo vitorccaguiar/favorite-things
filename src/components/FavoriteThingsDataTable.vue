@@ -354,7 +354,7 @@ export default {
         this.setFavoriteDialogProgress(true, "Deleting Favorite Thing...");
         axios({
           method: 'delete',
-          url: '/api/favoritething/' + favoriteThing.category + '/',
+          url: '/api/favoritething/' + favoriteThing.category.id + '/',
           headers: {'Content-Type': 'application/json'},
         })
         .then(response => {
