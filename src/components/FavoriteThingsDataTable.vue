@@ -319,7 +319,6 @@ export default {
     },
 
     updateFavoriteThing() {
-      console.log('Category: ' + JSON.stringify(this.editedItem.category));
       try {
         this.setFavoriteDialogProgress(true, "Updating Favorite Thing...");
         axios({
@@ -337,11 +336,6 @@ export default {
         .then(response => {
           this.setFavoriteDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly updated the favorite thing " + response.data.title);
-          this.editedItem.title = null;
-          this.editedItem.description = null;
-          this.editedItem.ranking = null;
-          this.editedItem.category = null;
-          this.editedItem.metadata = null;
           this.getFavoriteThings();
         })
         .catch(error => {
