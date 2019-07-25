@@ -76,7 +76,7 @@
       </v-dialog>
       <v-dialog v-model="categoryDialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn @click="getCategories" dark color="#0191A9" class="mb-2" v-on="on">Manage Category</v-btn>
+          <v-btn @click="initCategoryDialog" dark color="#0191A9" class="mb-2" v-on="on">Manage Category</v-btn>
         </template>
         <v-card>
           <div v-if="inCategoryDialogProgress">
@@ -302,6 +302,7 @@ export default {
             this.editedItem.ranking = null;
             this.editedItem.category = null;
             this.editedItem.metadata = null;
+            this.favoriteThingDialog = false;
             this.getFavoriteThings();
           })
           .catch(error => {
@@ -336,7 +337,9 @@ export default {
         .then(response => {
           this.setFavoriteDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly updated the favorite thing " + response.data.title);
+          this.favoriteThingDialog = false;
           this.getFavoriteThings();
+          this.update = false;
         })
         .catch(error => {
           this.setFavoriteDialogProgress(false, "");
@@ -447,6 +450,7 @@ export default {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly updated the category " + response.data.name);
           this.category.name = null;
+          this.
         })
         .catch(error => {
           this.setCategoryDialogProgress(false, "");
@@ -563,6 +567,11 @@ export default {
       }
       this.getCategories();
     }
+  },
+
+  initCategoryDialog() {
+    this.getCategories();
+    this.radioGroup = 1;
   }
 };
 </script>
