@@ -349,12 +349,12 @@ export default {
       }
     },
 
-    deleteFavoriteThing(favoriteThing) {
+    deleteFavoriteThing(favoriteThingId) {
       try {
         this.setFavoriteDialogProgress(true, "Deleting Favorite Thing...");
         axios({
           method: 'delete',
-          url: '/api/favoritething/' + favoriteThing.category.id + '/',
+          url: '/api/favoritething/' + favoriteThingId + '/',
           headers: {'Content-Type': 'application/json'},
         })
         .then(response => {
@@ -416,7 +416,6 @@ export default {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly created the category " + response.data.name);
           this.category.name = null;
-          console.log(response);
         })
         .catch(error => {
           this.setCategoryDialogProgress(false, "");
@@ -507,18 +506,15 @@ export default {
     },
 
     editItem(item) {
-      console.log('editItem');
-      console.log(item);
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.favoriteThingDialog = true;
     },
 
     deleteItem(item) {
-      const index = this.favoriteThings.indexOf(item);
+      console.log('deleteItem: ' + item.category.id)
       if (confirm("Are you sure you want to delete this item?")) {
-        this.deleteFavoriteThing(item);
-        this.getFavoriteThings();
+        this.deleteFavoriteThing(item.category.id);
       }
     },
 
