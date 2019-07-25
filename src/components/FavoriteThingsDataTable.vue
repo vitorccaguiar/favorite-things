@@ -12,6 +12,7 @@
       </v-progress-linear>
     </div>
     <v-toolbar flat color="white">
+      {{editedItem}}
       <v-spacer></v-spacer>
       <v-dialog v-model="favoriteThingDialog" max-width="500px">
         <template v-slot:activator="{ on }">
@@ -122,7 +123,6 @@
                     item-value="id"
                     label="Select a category">
                   </v-select>
-                  {{editedItem.category}}
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-if="radioGroup != 3" v-model="category.name" label="Name" autofocus></v-text-field>
@@ -351,6 +351,7 @@ export default {
     },
 
     getCategories() {
+      console.log('getCategories: ' + this.editItem);
       try {
         this.setFavoriteDialogProgress(true, "Loading Categories...");
         axios.get('/api/category')
@@ -404,7 +405,7 @@ export default {
     updateCategory() {
       try {
         this.setCategoryDialogProgress(true, "Updating Category...");
-        console.log('Loraine: ' + this.editItem.category);
+        console.log('updateCategory: ' + this.editItem);
         axios({
           method: 'put',
           url: '/api/category/' + this.editItem.category + '/',
