@@ -122,6 +122,7 @@
                     item-value="id"
                     label="Select a category">
                   </v-select>
+                  {{editedItem.category}}
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-if="radioGroup != 3" v-model="category.name" label="Name" autofocus></v-text-field>
@@ -403,6 +404,7 @@ export default {
     updateCategory() {
       try {
         this.setCategoryDialogProgress(true, "Updating Category...");
+        console.log('Loraine: ' + this.editItem.category);
         axios({
           method: 'put',
           url: '/api/category/' + this.editItem.category + '/',
