@@ -349,12 +349,12 @@ export default {
       }
     },
 
-    deleteFavoriteThing() {
+    deleteFavoriteThing(favoriteThing) {
       try {
         this.setFavoriteDialogProgress(true, "Deleting Favorite Thing...");
         axios({
           method: 'delete',
-          url: '/api/favoritething/' + this.editedItem.category + '/',
+          url: '/api/favoritething/' + favoriteThing.category + '/',
           headers: {'Content-Type': 'application/json'},
         })
         .then(response => {
@@ -517,7 +517,7 @@ export default {
     deleteItem(item) {
       const index = this.favoriteThings.indexOf(item);
       if (confirm("Are you sure you want to delete this item?")) {
-        this.deleteFavoriteThing();
+        this.deleteFavoriteThing(item);
         this.getFavoriteThings();
       }
     },
