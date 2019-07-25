@@ -142,7 +142,7 @@
         <td>{{ props.item.title }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
-        <td class="text-xs-left"><v-btn color="primary">Metadata</v-btn></td>
+        <td class="text-xs-left"><v-btn style="margin: 0px;" color="primary">View</v-btn></td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
