@@ -203,6 +203,7 @@ export default {
     categories: [],
     editedIndex: -1,
     editedItem: {
+      id: null,
       title: null,
       description: null,
       ranking: null,
@@ -322,7 +323,7 @@ export default {
         this.setFavoriteDialogProgress(true, "Updating Favorite Thing...");
         axios({
           method: 'put',
-          url: '/api/favoritething/' + this.editedItem.category + '/',
+          url: '/api/favoritething/' + this.editedItem.id + '/',
           headers: {'Content-Type': 'application/json'},
           data: {
             title: this.editedItem.title,
@@ -515,6 +516,7 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.favoriteThingDialog = true;
       this.update = true;
+      this.editedItem.id = item.id;
     },
 
     deleteItem(item) {
