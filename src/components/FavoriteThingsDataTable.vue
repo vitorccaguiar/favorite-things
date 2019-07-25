@@ -253,160 +253,211 @@ export default {
     },
 
     getFavoriteThings() {
-      this.setMainProgress(true, "Loading Favorite Things...");
-      axios.get('/api/favoritething')
-        .then(response => {
-          this.favoriteThings = response.data;
-          this.setMainProgress(false, "");
-        })
-        .catch(error => {
-          console.error(error);
-          this.setMainProgress(false, "");
-        })
+      try {
+        this.setMainProgress(true, "Loading Favorite Things...");
+        axios.get('/api/favoritething')
+          .then(response => {
+            this.favoriteThings = response.data;
+            this.setMainProgress(false, "");
+          })
+          .catch(error => {
+            this.setMainProgress(false, "");
+            this.setSnackbar(true, "Failed while getting the favorite things");
+            console.error(error);
+          })
+      }
+      catch(error) {
+        this.setMainProgress(false, "");
+        this.setSnackbar(true, "Failed while getting the favorite things");
+        console.log(error);
+      }
     },
 
     saveFavoriteThing() {
-      this.setFavoriteDialogProgress(true, "Saving Favorite Thing...");
-      axios({
-        method: 'post',
-        url: '/api/favoritething/',
-        headers: {'Content-Type': 'application/json'},
-        data: {
-          title: this.editedItem.title,
-          description: this.editedItem.description,
-          ranking: this.editedItem.ranking,
-          category_id: this.editedItem.category,
-          audit_log: "Loging",
-        }
-      })
-      .then(response => {
-        this.setFavoriteDialogProgress(false, "");
-        this.setSnackbar(true, "Successfuly created the favorite thing " + response.data.title);
-        this.editedItem.title = null;
-        this.editedItem.description = null;
-        this.editedItem.ranking = null;
-        this.editedItem.category = null;
-        this.editedItem.metadata = null;
-        this.getFavoriteThings();
-      })
-      .catch(error => {
+      try {
+        this.setFavoriteDialogProgress(true, "Saving Favorite Thing...");
+        axios({
+          method: 'post',
+          url: '/api/favoritething/',
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            title: this.editedItem.title,
+            description: this.editedItem.description,
+            ranking: this.editedItem.ranking,
+            category_id: this.editedItem.category,
+            audit_log: "Loging",
+          }
+        })
+        .then(response => {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Successfuly created the favorite thing " + response.data.title);
+          this.editedItem.title = null;
+          this.editedItem.description = null;
+          this.editedItem.ranking = null;
+          this.editedItem.category = null;
+          this.editedItem.metadata = null;
+          this.getFavoriteThings();
+        })
+        .catch(error => {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while creating the favorite thing");
+          console.log(error);
+        });
+      }
+      catch(error) {
         this.setFavoriteDialogProgress(false, "");
         this.setSnackbar(true, "Failed while creating the favorite thing");
         console.log(error);
-      });
+      }
     },
 
     updateFavoriteThing() {
-      this.setFavoriteDialogProgress(true, "Updating Favorite Thing...");
-      axios({
-        method: 'put',
-        url: '/api/favoritething/' + this.editedItem.id + '/',
-        headers: {'Content-Type': 'application/json'},
-        data: {
-          title: this.editedItem.title,
-          description: this.editedItem.description,
-          ranking: this.editedItem.ranking,
-          category_id: this.editedItem.category,
-          audit_log: "Loging",
-        }
-      })
-      .then(response => {
-        this.setFavoriteDialogProgress(false, "");
-        this.setSnackbar(true, "Successfuly updated the favorite thing " + response.data.title);
-        this.editedItem.title = null;
-        this.editedItem.description = null;
-        this.editedItem.ranking = null;
-        this.editedItem.category = null;
-        this.editedItem.metadata = null;
-        this.getFavoriteThings();
-      })
-      .catch(error => {
-        this.setFavoriteDialogProgress(false, "");
-        this.setSnackbar(true, "Failed while updating the favorite thing");
-        console.log(error);
-      });
+      try {
+        this.setFavoriteDialogProgress(true, "Updating Favorite Thing...");
+        axios({
+          method: 'put',
+          url: '/api/favoritething/' + this.editedItem.id + '/',
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            title: this.editedItem.title,
+            description: this.editedItem.description,
+            ranking: this.editedItem.ranking,
+            category_id: this.editedItem.category,
+            audit_log: "Loging",
+          }
+        })
+        .then(response => {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Successfuly updated the favorite thing " + response.data.title);
+          this.editedItem.title = null;
+          this.editedItem.description = null;
+          this.editedItem.ranking = null;
+          this.editedItem.category = null;
+          this.editedItem.metadata = null;
+          this.getFavoriteThings();
+        })
+        .catch(error => {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while updating the favorite thing");
+          console.log(error);
+        });
+      }
+      catch(error) {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while updating the favorite thing");
+          console.log(error);
+      }
     },
 
     getCategories() {
-      this.setFavoriteDialogProgress(true, "Loading Categories...");
-      axios.get('/api/category')
-        .then(response => {
-          this.setFavoriteDialogProgress(false, "");
-          this.categories = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.setFavoriteDialogProgress(false, "");
-        });
+      try {
+        this.setFavoriteDialogProgress(true, "Loading Categories...");
+        axios.get('/api/category')
+          .then(response => {
+            this.setFavoriteDialogProgress(false, "");
+            this.categories = response.data;
+          })
+          .catch(error => {
+            this.setFavoriteDialogProgress(false, "");
+            this.setSnackbar(true, "Failed while getting the categories");
+            console.log(error);
+          });
+      }
+      catch(error) {
+        this.setFavoriteDialogProgress(false, "");
+        this.setSnackbar(true, "Failed while getting the categories");
+        console.log(error);
+      }
     },
 
     saveCategory() {
-      this.setCategoryDialogProgress(true, "Saving Category...");
-      axios({
-        method: 'post',
-        url: '/api/category/',
-        headers: {'Content-Type': 'application/json'},
-        data: {
-          name: this.category.name,
-        }
-      })
-      .then(response => {
-        this.setCategoryDialogProgress(false, "");
-        this.setSnackbar(true, "Successfuly created the category " + response.data.name);
-        this.category.name = null;
-        console.log(response);
-      })
-      .catch(error => {
+      try {
+        this.setCategoryDialogProgress(true, "Saving Category...");
+        axios({
+          method: 'post',
+          url: '/api/category/',
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            name: this.category.name,
+          }
+        })
+        .then(response => {
+          this.setCategoryDialogProgress(false, "");
+          this.setSnackbar(true, "Successfuly created the category " + response.data.name);
+          this.category.name = null;
+          console.log(response);
+        })
+        .catch(error => {
+          this.setCategoryDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while creating the category");
+          console.log(error);
+        });
+      }
+      catch(error) {
         this.setCategoryDialogProgress(false, "");
         this.setSnackbar(true, "Failed while creating the category");
         console.log(error);
-      });
+      }
     },
 
     updateCategory() {
-      this.setCategoryDialogProgress(true, "Updating Category...");
-      axios({
-        method: 'put',
-        url: '/api/category/' + this.editItem.category.id + '/',
-        headers: {'Content-Type': 'application/json'},
-        data: {
-          name: this.category.name,
-        }
-      })
-      .then(response => {
-        this.setCategoryDialogProgress(false, "");
-        this.setSnackbar(true, "Successfuly updated the category " + response.data.name);
-        this.category.name = null;
-        console.log(response);
-      })
-      .catch(error => {
+      try {
+        this.setCategoryDialogProgress(true, "Updating Category...");
+        axios({
+          method: 'put',
+          url: '/api/category/' + this.editItem.category + '/',
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            name: this.category.name,
+          }
+        })
+        .then(response => {
+          this.setCategoryDialogProgress(false, "");
+          this.setSnackbar(true, "Successfuly updated the category " + response.data.name);
+          this.category.name = null;
+          console.log(response);
+        })
+        .catch(error => {
+          this.setCategoryDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while updating the category");
+          console.log(error);
+        });
+      }
+      catch(error) {
         this.setCategoryDialogProgress(false, "");
         this.setSnackbar(true, "Failed while updating the category");
         console.log(error);
-      });
+      }
     },
 
     deleteCategory() {
-      this.setCategoryDialogProgress(true, "Deleting Category...");
-      axios({
-        method: 'delete',
-        url: '/api/category/' + this.editItem.category.id + '/',
-        headers: {'Content-Type': 'application/json'},
-        data: {
-          name: this.category.name,
-        }
-      })
-      .then(response => {
-        this.setCategoryDialogProgress(false, "");
-        this.setSnackbar(true, "Successfuly deleted the category " + response.data.name);
-        this.category.name = null;
-        console.log(response);
-      })
-      .catch(error => {
+      try {
+        this.setCategoryDialogProgress(true, "Deleting Category...");
+        axios({
+          method: 'delete',
+          url: '/api/category/' + this.editItem.category + '/',
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            name: this.category.name,
+          }
+        })
+        .then(response => {
+          this.setCategoryDialogProgress(false, "");
+          this.setSnackbar(true, "Successfuly deleted the category " + response.data.name);
+          this.category.name = null;
+          console.log(response);
+        })
+        .catch(error => {
+          this.setCategoryDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while deleting the category");
+          console.log(error);
+        });
+      }
+      catch(error) {
         this.setCategoryDialogProgress(false, "");
         this.setSnackbar(true, "Failed while deleting the category");
         console.log(error);
-      });
+      }
     },
 
     setSnackbar(status, message) {
