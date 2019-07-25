@@ -124,7 +124,7 @@
                   </v-select>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-if="radioGroup != 3" v-model="category.name" label="Name" autofocus></v-text-field>
+                  <v-text-field v-if="radioGroup != 3" v-model="category.name" label="Name" :rules="basicRules" autofocus></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -317,14 +317,13 @@ export default {
         this.setFavoriteDialogProgress(true, "Updating Favorite Thing...");
         axios({
           method: 'put',
-          url: '/api/favoritething/' + this.editedItem.id + '/',
+          url: '/api/favoritething/' + this.editedItem.category + '/',
           headers: {'Content-Type': 'application/json'},
           data: {
             title: this.editedItem.title,
             description: this.editedItem.description,
             ranking: this.editedItem.ranking,
             category_id: this.editedItem.category,
-            audit_log: "Loging",
           }
         })
         .then(response => {
@@ -346,6 +345,37 @@ export default {
       catch(error) {
           this.setFavoriteDialogProgress(false, "");
           this.setSnackbar(true, "Failed while updating the favorite thing");
+          console.log(error);
+      }
+    },
+
+    deleteFavoriteThing() {
+      try {
+        this.setFavoriteDialogProgress(true, "Deleting Favorite Thing...");
+        axios({
+          method: 'delete',
+          url: '/api/favoritething/' + this.editedItem.category + '/',
+          headers: {'Content-Type': 'application/json'},
+        })
+        .then(response => {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Successfuly deleted the favorite thing");
+          this.editedItem.title = null;
+          this.editedItem.description = null;
+          this.editedItem.ranking = null;
+          this.editedItem.category = null;
+          this.editedItem.metadata = null;
+          this.getFavoriteThings();
+        })
+        .catch(error => {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while deleting the favorite thing");
+          console.log(error);
+        });
+      }
+      catch(error) {
+          this.setFavoriteDialogProgress(false, "");
+          this.setSnackbar(true, "Failed while deleting the favorite thing");
           console.log(error);
       }
     },
@@ -437,9 +467,6 @@ export default {
           method: 'delete',
           url: '/api/category/' + this.category.id + '/',
           headers: {'Content-Type': 'application/json'},
-          data: {
-            name: this.category.name,
-          }
         })
         .then(response => {
           this.setCategoryDialogProgress(false, "");
@@ -487,8 +514,10 @@ export default {
 
     deleteItem(item) {
       const index = this.favoriteThings.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      if (confirm("Are you sure you want to delete this item?")) {
         this.favoriteThings.splice(index, 1);
+        this.deleteFavoriteThing();
+      }
     },
 
     close() {
