@@ -319,6 +319,7 @@ export default {
     },
 
     updateFavoriteThing() {
+      console.log('Category: ' + JSON.stringify(this.editedItem.category));
       try {
         this.setFavoriteDialogProgress(true, "Updating Favorite Thing...");
         axios({
@@ -329,7 +330,8 @@ export default {
             title: this.editedItem.title,
             description: this.editedItem.description,
             ranking: this.editedItem.ranking,
-            category_id: this.editedItem.category,
+            category_id: this.editedItem.category.id,
+            audit_log: "Loging"
           }
         })
         .then(response => {
@@ -513,10 +515,8 @@ export default {
 
     editItem(item) {
       this.getCategories();
-      console.log('Item: ' + JSON.stringify(item));
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      console.log('EditedItem: ' + JSON.stringify(this.editedItem));
       this.favoriteThingDialog = true;
       this.update = true;
       this.editedItem.id = item.id;
