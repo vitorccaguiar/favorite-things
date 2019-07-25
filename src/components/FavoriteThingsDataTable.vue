@@ -512,8 +512,11 @@ export default {
     },
 
     editItem(item) {
+      this.getCategories();
+      console.log('Item: ' + JSON.stringify(item));
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      console.log('EditedItem: ' + JSON.stringify(this.editedItem));
       this.favoriteThingDialog = true;
       this.update = true;
       this.editedItem.id = item.id;
