@@ -507,6 +507,8 @@ export default {
     },
 
     editItem(item) {
+      console.log('editItem');
+      console.log(item);
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.favoriteThingDialog = true;
@@ -515,8 +517,8 @@ export default {
     deleteItem(item) {
       const index = this.favoriteThings.indexOf(item);
       if (confirm("Are you sure you want to delete this item?")) {
-        this.favoriteThings.splice(index, 1);
         this.deleteFavoriteThing();
+        this.getFavoriteThings();
       }
     },
 
