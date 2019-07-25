@@ -450,7 +450,6 @@ export default {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly updated the category " + response.data.name);
           this.category.name = null;
-          this.
         })
         .catch(error => {
           this.setCategoryDialogProgress(false, "");
