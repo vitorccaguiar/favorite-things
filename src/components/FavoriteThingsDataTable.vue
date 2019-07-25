@@ -142,7 +142,7 @@
         <td>{{ props.item.title }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
-        <td class="text-xs-left">{{ props.item.metadata }}</td>
+        <td class="text-xs-left"><v-btn color="primary">Metadata</v-btn></td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
@@ -338,8 +338,9 @@ export default {
           this.setFavoriteDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly updated the favorite thing " + response.data.title);
           this.favoriteThingDialog = false;
-          this.getFavoriteThings();
           this.update = false;
+          this.editedIndex = -1;
+          this.getFavoriteThings();
         })
         .catch(error => {
           this.setFavoriteDialogProgress(false, "");
@@ -520,7 +521,7 @@ export default {
     },
 
     deleteItem(item) {
-      if (confirm("Are you sure you want to delete this item?")) {
+      if (confirm("Are you sure you want to delete this favorite thing?")) {
         this.deleteFavoriteThing(item.id);
       }
     },
@@ -562,7 +563,10 @@ export default {
       } else if(this.radioGroup == 2) {
         this.updateCategory();
       } else if(this.radioGroup == 3) {
-        this.deleteCategory();
+        if (confirm("Are you sure you want to delete this category? " +
+            "By deleting this category all related favorite things will be also deleted.")) {
+          this.deleteCategory();
+        }
       }
       this.getCategories();
     }
