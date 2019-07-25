@@ -136,13 +136,59 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="metadataDialog" max-width="500px">
+        <v-card>
+          <div v-if="inMetadataDialogProgress">
+            <v-layout justify-center>
+              <h3> {{ progressMessage }} </h3>
+            </v-layout>
+            <v-progress-linear
+              color="#0191A9"
+              indeterminate
+              rounded
+              height="6">
+            </v-progress-linear>
+          </div>
+          <v-card-title>
+            <span class="headline">Manage Metadata</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout column>
+                <v-flex xs12 sm6 md4>
+                  <v-radio-group v-model="metadataRadioGroup" row @change="getButtonMessage">
+                    <v-radio
+                      label="List"
+                      value="1"
+                    ></v-radio>
+                    <v-radio
+                      label="New"
+                      value="2"
+                    ></v-radio>
+                    <v-radio
+                      label="Delete"
+                      value="3"
+                    ></v-radio>
+                  </v-radio-group>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="closeMetadataDialog">Cancel</v-btn>
+            <v-btn color="blue darken-1" flat @click="metadataAction">{{metadataRadioGroupMessage}}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-toolbar>
     <v-data-table :headers="headers" :items="favoriteThings" class="elevation-1">
       <template v-slot:items="props">
         <td>{{ props.item.title }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
-        <td class="text-xs-left"><v-btn class="metadataButton" color="primary">View</v-btn></td>
+        <td class="text-xs-left metadataButton"><v-btn color="#0191A9">View</v-btn></td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
@@ -580,7 +626,6 @@ export default {
 </script>
 <style>
   .metadataButton {
-    margin: 0px;
     padding: 8px;
   }
 </style>
