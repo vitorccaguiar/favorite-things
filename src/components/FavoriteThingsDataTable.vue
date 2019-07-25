@@ -177,6 +177,7 @@ import axios from 'axios';
 
 export default {
   data: () => ({
+    update: false,
     radioGroup: 1,
     radioGroupMessage: 'Save',
     favoriteThingDialog: false,
@@ -276,34 +277,38 @@ export default {
 
     saveFavoriteThing() {
       try {
-        this.setFavoriteDialogProgress(true, "Saving Favorite Thing...");
-        axios({
-          method: 'post',
-          url: '/api/favoritething/',
-          headers: {'Content-Type': 'application/json'},
-          data: {
-            title: this.editedItem.title,
-            description: this.editedItem.description,
-            ranking: this.editedItem.ranking,
-            category_id: this.editedItem.category,
-            audit_log: "Loging",
-          }
-        })
-        .then(response => {
-          this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Successfuly created the favorite thing " + response.data.title);
-          this.editedItem.title = null;
-          this.editedItem.description = null;
-          this.editedItem.ranking = null;
-          this.editedItem.category = null;
-          this.editedItem.metadata = null;
-          this.getFavoriteThings();
-        })
-        .catch(error => {
-          this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while creating the favorite thing");
-          console.log(error);
-        });
+        if (this.update) {
+          this.updateFavoriteThing();
+        } else {
+          this.setFavoriteDialogProgress(true, "Saving Favorite Thing...");
+          axios({
+            method: 'post',
+            url: '/api/favoritething/',
+            headers: {'Content-Type': 'application/json'},
+            data: {
+              title: this.editedItem.title,
+              description: this.editedItem.description,
+              ranking: this.editedItem.ranking,
+              category_id: this.editedItem.category,
+              audit_log: "Loging",
+            }
+          })
+          .then(response => {
+            this.setFavoriteDialogProgress(false, "");
+            this.setSnackbar(true, "Successfuly created the favorite thing " + response.data.title);
+            this.editedItem.title = null;
+            this.editedItem.description = null;
+            this.editedItem.ranking = null;
+            this.editedItem.category = null;
+            this.editedItem.metadata = null;
+            this.getFavoriteThings();
+          })
+          .catch(error => {
+            this.setFavoriteDialogProgress(false, "");
+            this.setSnackbar(true, "Failed while creating the favorite thing");
+            console.log(error);
+          });
+        }
       }
       catch(error) {
         this.setFavoriteDialogProgress(false, "");
@@ -509,12 +514,12 @@ export default {
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.favoriteThingDialog = true;
+      this.update = true;
     },
 
     deleteItem(item) {
-      console.log('deleteItem: ' + item.category.id)
       if (confirm("Are you sure you want to delete this item?")) {
-        this.deleteFavoriteThing(item.category.id);
+        this.deleteFavoriteThing(item.id);
       }
     },
 
