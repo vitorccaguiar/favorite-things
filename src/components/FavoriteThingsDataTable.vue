@@ -177,7 +177,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="closeMetadataDialog">Cancel</v-btn>
+            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
             <v-btn color="blue darken-1" flat @click="metadataAction">{{metadataRadioGroupMessage}}</v-btn>
           </v-card-actions>
         </v-card>
@@ -188,7 +188,7 @@
         <td>{{ props.item.title }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
-        <td class="text-xs-left metadataButton"><v-btn color="#0191A9">View</v-btn></td>
+        <td class="text-xs-left metadataButton"><v-btn @click="initMetadataDialog" dark class="mb-2" color="#0191A9">View</v-btn></td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
@@ -226,6 +226,7 @@ export default {
     update: false,
     radioGroup: 1,
     radioGroupMessage: 'Save',
+    metadataDialog: false,
     favoriteThingDialog: false,
     categoryDialog: false,
     snackbar: false,
@@ -621,6 +622,10 @@ export default {
   initCategoryDialog() {
     this.getCategories();
     this.radioGroup = 1;
+  },
+
+  initMetadataDialog() {
+    this.metadataDialog = true;
   }
 };
 </script>
