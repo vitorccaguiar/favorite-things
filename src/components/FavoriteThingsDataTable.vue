@@ -416,7 +416,6 @@ export default {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly updated the category " + response.data.name);
           this.category.name = null;
-          console.log(response);
         })
         .catch(error => {
           this.setCategoryDialogProgress(false, "");
@@ -444,7 +443,7 @@ export default {
         })
         .then(response => {
           this.setCategoryDialogProgress(false, "");
-          this.setSnackbar(true, "Successfuly deleted the category " + response.data.name);
+          this.setSnackbar(true, "Successfuly deleted the category");
           this.category.name = null;
         })
         .catch(error => {
@@ -528,11 +527,10 @@ export default {
         this.saveCategory();
       } else if(this.radioGroup == 2) {
         this.updateCategory();
-        this.getCategories();
       } else if(this.radioGroup == 3) {
         this.deleteCategory();
-        this.getCategories();
       }
+      this.getCategories();
     }
   }
 };
