@@ -12,7 +12,6 @@
       </v-progress-linear>
     </div>
     <v-toolbar flat color="white">
-      {{editedItem}}
       <v-spacer></v-spacer>
       <v-dialog v-model="favoriteThingDialog" max-width="500px">
         <template v-slot:activator="{ on }">
@@ -116,7 +115,7 @@
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-select
-                    v-model="editedItem.category"
+                    v-model="category.id"
                     v-if="radioGroup > 1"
                     :items="categories"
                     item-text="name"
@@ -220,6 +219,7 @@ export default {
       audit_log: ""
     },
     category: {
+      id: null,
       name: null
     },
     inMainProgress: false,
@@ -351,7 +351,6 @@ export default {
     },
 
     getCategories() {
-      console.log('getCategories: ' + this.editItem);
       try {
         this.setFavoriteDialogProgress(true, "Loading Categories...");
         axios.get('/api/category')
@@ -405,10 +404,10 @@ export default {
     updateCategory() {
       try {
         this.setCategoryDialogProgress(true, "Updating Category...");
-        console.log('updateCategory: ' + this.editItem);
+        console.log('updateCategory: ' + this.category.id);
         axios({
           method: 'put',
-          url: '/api/category/' + this.editItem.category + '/',
+          url: '/api/category/' + this.category.id + '/',
           headers: {'Content-Type': 'application/json'},
           data: {
             name: this.category.name,
@@ -438,7 +437,7 @@ export default {
         this.setCategoryDialogProgress(true, "Deleting Category...");
         axios({
           method: 'delete',
-          url: '/api/category/' + this.editItem.category + '/',
+          url: '/api/category/' + this.category.id + '/',
           headers: {'Content-Type': 'application/json'},
           data: {
             name: this.category.name,
