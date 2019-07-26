@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="500px">
+  <v-dialog :value="value" @input="$emit('input')" max-width="500px">
     <v-card>
       <div v-if="inProgress">
         <v-layout justify-center>
@@ -55,9 +55,7 @@ export default {
     radioGroupMessage: "",
     showList: false
   }),
-  props: {
-    dialog: Boolean,
-  },
+  props: ["value"],
   methods: {
     getButtonMessage() {
       if (this.radioGroup == 1) { 
@@ -69,7 +67,7 @@ export default {
       }
     },
     close() {
-      this.dialog = false;
+      $emit('input');
     },
     manageActions() {
       if (this.radioGroup == 1) {
@@ -95,17 +93,6 @@ export default {
 
     deleteMetadata() {
 
-    }
-  },
-
-  computed: {
-    show: {
-      get () {
-        return this.dialog
-      },
-      set (value) {
-         this.$emit('dialog', value)
-      }
     }
   }
 }

@@ -143,8 +143,8 @@
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
         <td class="text-xs-left metadataButton">
-          <v-btn @click="test=true" dark color="#0191A9">View</v-btn>
-          <MetadataDialog v-model="test"></MetadataDialog>
+          <v-btn @click="metadataDialog=true" dark color="#0191A9">View</v-btn>
+          <MetadataDialog v-model="metadataDialog"></MetadataDialog>
         </td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
@@ -183,6 +183,7 @@ export default {
     update: false,
     radioGroup: 1,
     radioGroupMessage: 'Save',
+    metadataDialog: false,
     favoriteThingDialog: false,
     categoryDialog: false,
     snackbar: false,
