@@ -188,7 +188,7 @@
         <td>{{ props.item.title }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
-        <td class="text-xs-left metadataButton"><v-btn @click="initMetadataDialog" dark class="mb-2" color="#0191A9">View</v-btn></td>
+        <td class="text-xs-left metadataButton"><v-btn @click="initMetadataDialog" dark color="#0191A9">View</v-btn></td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
@@ -469,6 +469,9 @@ export default {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly created the category " + response.data.name);
           this.category.name = null;
+          this.category.id = null;
+          this.radioGroup = 1;
+          this.getCategories();
         })
         .catch(error => {
           this.setCategoryDialogProgress(false, "");
@@ -498,6 +501,9 @@ export default {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly updated the category " + response.data.name);
           this.category.name = null;
+          this.category.id = null;
+          this.radioGroup = 1;
+          this.getCategories();
         })
         .catch(error => {
           this.setCategoryDialogProgress(false, "");
@@ -523,7 +529,10 @@ export default {
         .then(response => {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly deleted the category");
+          this.category.id = null;
           this.category.name = null;
+          this.radioGroup = 1;
+          this.getCategories();
         })
         .catch(error => {
           this.setCategoryDialogProgress(false, "");
@@ -604,7 +613,7 @@ export default {
       }
     },
 
-    async categoryAction() {
+    categoryAction() {
       if (this.radioGroup == 1) {
         this.saveCategory();
       } else if(this.radioGroup == 2) {
@@ -612,16 +621,14 @@ export default {
       } else if(this.radioGroup == 3) {
         if (confirm("Are you sure you want to delete this category? " +
             "By deleting this category all related favorite things will be also deleted.")) {
-          await this.deleteCategory();
+          this.deleteCategory();
         }
       }
-      this.getCategories();
     }
   },
 
-  async initCategoryDialog() {
-    await this.getCategories();
-    this.radioGroup = 1;
+  initCategoryDialog() {
+    this.getCategories();
   },
 
   initMetadataDialog() {
