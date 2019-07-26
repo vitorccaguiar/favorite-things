@@ -604,7 +604,7 @@ export default {
       }
     },
 
-    categoryAction() {
+    async categoryAction() {
       if (this.radioGroup == 1) {
         this.saveCategory();
       } else if(this.radioGroup == 2) {
@@ -612,15 +612,15 @@ export default {
       } else if(this.radioGroup == 3) {
         if (confirm("Are you sure you want to delete this category? " +
             "By deleting this category all related favorite things will be also deleted.")) {
-          this.deleteCategory();
+          await this.deleteCategory();
         }
       }
       this.getCategories();
     }
   },
 
-  initCategoryDialog() {
-    this.getCategories();
+  async initCategoryDialog() {
+    await this.getCategories();
     this.radioGroup = 1;
   },
 
