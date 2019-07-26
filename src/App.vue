@@ -21,10 +21,12 @@
 
 <script>
 import FavoriteThingsDataTable from "./components/FavoriteThingsDataTable.vue";
+import MetadataDialog from "./components/MetadataDialog.vue";
 
 export default {
   components: {
-    FavoriteThingsDataTable
+    FavoriteThingsDataTable,
+    MetadataDialog
   }
 };
 </script>

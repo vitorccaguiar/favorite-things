@@ -177,13 +177,8 @@
 
 <script>
 import axios from 'axios';
-import MetadataDialog from "./components/MetadataDialog.vue";
 
 export default {
-  components: {
-    MetadataDialog
-  },
-
   data: () => ({
     update: false,
     radioGroup: 1,
