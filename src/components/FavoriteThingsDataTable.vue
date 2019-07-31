@@ -124,8 +124,6 @@ export default {
 
   data: () => ({
     update: false,
-    radioGroup: 1,
-    radioGroupMessage: 'Save',
     favoriteThingDialog: false,
     snackbar: false,
     headers: [
