@@ -74,7 +74,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <CategoryDialog @setSnackbar="setSnackbar"/>
+      <CategoryDialog @setSnackbar="setSnackbar" @getFavoriteThings="getFavoriteThings"/>
     </v-toolbar>
     <v-data-table :headers="headers" :items="favoriteThings" class="elevation-1">
       <template v-slot:items="props">

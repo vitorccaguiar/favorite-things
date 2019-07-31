@@ -112,7 +112,7 @@ export default {
             this.category.name = null;
             this.category.id = null;
             this.radioGroup = 1;
-            this.getFavoriteThings();
+            this.$emit('getFavoriteThings');
           })
           .catch(error => {
             this.setDialogProgress(false, "");
@@ -143,7 +143,7 @@ export default {
             this.category.name = null;
             this.category.id = null;
             this.radioGroup = 1;
-            this.getFavoriteThings();
+            this.$emit('getFavoriteThings');
           })
           .catch(error => {
             this.setDialogProgress(false, "");
@@ -171,7 +171,7 @@ export default {
             this.category.id = null;
             this.category.name = null;
             this.radioGroup = 1;
-            this.getFavoriteThings();
+            this.$emit('getFavoriteThings');
           })
           .catch(error => {
             this.setDialogProgress(false, "");
