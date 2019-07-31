@@ -74,68 +74,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="categoryDialog" max-width="500px">
-        <template v-slot:activator="{ on }">
-          <v-btn @click="initCategoryDialog" dark color="#0191A9" class="mb-2" v-on="on">Manage Category</v-btn>
-        </template>
-        <v-card>
-          <div v-if="inCategoryDialogProgress">
-            <v-layout justify-center>
-              <h3> {{ progressMessage }} </h3>
-            </v-layout>
-            <v-progress-linear
-              color="#0191A9"
-              indeterminate
-              rounded
-              height="6">
-            </v-progress-linear>
-          </div>
-          <v-card-title>
-            <span class="headline">Manage Category</span>
-          </v-card-title>
-
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout column>
-                <v-flex xs12 sm6 md4>
-                  <v-radio-group v-model="radioGroup" row @change="getButtonMessage">
-                    <v-radio
-                      label="New"
-                      value="1"
-                    ></v-radio>
-                    <v-radio
-                      label="Update"
-                      value="2"
-                    ></v-radio>
-                    <v-radio
-                      label="Delete"
-                      value="3"
-                    ></v-radio>
-                  </v-radio-group>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-select
-                    v-model="category.id"
-                    v-if="radioGroup > 1"
-                    :items="categories"
-                    item-text="name"
-                    item-value="id"
-                    label="Select a category">
-                  </v-select>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-if="radioGroup != 3" v-model="category.name" label="Name" :rules="basicRules" autofocus></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="closeCategoryDialog">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="categoryAction">{{radioGroupMessage}}</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <CategoryDialog @setSnackbar="setSnackbar"/>
     </v-toolbar>
     <v-data-table :headers="headers" :items="favoriteThings" class="elevation-1">
       <template v-slot:items="props">
@@ -175,10 +114,12 @@
 <script>
 import axios from 'axios';
 import MetadataDialog from "./MetadataDialog.vue";
+import CategoryDialog from "./CategoryDialog.vue";
 
 export default {
   components: {
-    MetadataDialog
+    MetadataDialog,
+    CategoryDialog
   },
 
   data: () => ({
@@ -186,7 +127,6 @@ export default {
     radioGroup: 1,
     radioGroupMessage: 'Save',
     favoriteThingDialog: false,
-    categoryDialog: false,
     snackbar: false,
     headers: [
       {
@@ -205,7 +145,6 @@ export default {
       { text: "Actions", value: "name" }
     ],
     favoriteThings: [],
-    categories: [],
     editedIndex: -1,
     editedItem: {
       id: null,
@@ -225,13 +164,8 @@ export default {
       modified_date: new Date(),
       audit_log: ""
     },
-    category: {
-      id: null,
-      name: null
-    },
     inMainProgress: false,
     inFavoriteDialogProgress: false,
-    inCategoryDialogProgress: false,
     progressMessage: "",
     snackbarResult: "",
     basicRules: [
@@ -252,14 +186,10 @@ export default {
   },
 
   created() {
-    this.initialize();
+    this.getFavoriteThings();
   },
 
   methods: {
-    initialize() {
-      this.getFavoriteThings();
-    },
-
     getFavoriteThings() {
       try {
         this.setMainProgress(true, "Loading Favorite Things...");
@@ -270,13 +200,13 @@ export default {
           })
           .catch(error => {
             this.setMainProgress(false, "");
-            this.setSnackbar(true, "Failed while getting the favorite things");
+            this.setSnackbar("Failed while getting the favorite things");
             console.error(error);
           })
       }
       catch(error) {
         this.setMainProgress(false, "");
-        this.setSnackbar(true, "Failed while getting the favorite things");
+        this.setSnackbar("Failed while getting the favorite things");
         console.log(error);
       }
     },
@@ -301,7 +231,7 @@ export default {
           })
           .then(response => {
             this.setFavoriteDialogProgress(false, "");
-            this.setSnackbar(true, "Successfuly created the favorite thing " + response.data.title);
+            this.setSnackbar("Successfuly created the favorite thing " + response.data.title);
             this.editedItem.title = null;
             this.editedItem.description = null;
             this.editedItem.ranking = null;
@@ -312,14 +242,14 @@ export default {
           })
           .catch(error => {
             this.setFavoriteDialogProgress(false, "");
-            this.setSnackbar(true, "Failed while creating the favorite thing");
+            this.setSnackbar("Failed while creating the favorite thing");
             console.log(error);
           });
         }
       }
       catch(error) {
         this.setFavoriteDialogProgress(false, "");
-        this.setSnackbar(true, "Failed while creating the favorite thing");
+        this.setSnackbar("Failed while creating the favorite thing");
         console.log(error);
       }
     },
@@ -341,7 +271,7 @@ export default {
         })
         .then(response => {
           this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Successfuly updated the favorite thing " + response.data.title);
+          this.setSnackbar("Successfuly updated the favorite thing " + response.data.title);
           this.favoriteThingDialog = false;
           this.update = false;
           this.editedIndex = -1;
@@ -349,13 +279,13 @@ export default {
         })
         .catch(error => {
           this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while updating the favorite thing");
+          this.setSnackbar("Failed while updating the favorite thing");
           console.log(error);
         });
       }
       catch(error) {
           this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while updating the favorite thing");
+          this.setSnackbar("Failed while updating the favorite thing");
           console.log(error);
       }
     },
@@ -370,7 +300,7 @@ export default {
         })
         .then(() => {
           this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Successfuly deleted the favorite thing");
+          this.setSnackbar("Successfuly deleted the favorite thing");
           this.editedItem.title = null;
           this.editedItem.description = null;
           this.editedItem.ranking = null;
@@ -380,133 +310,19 @@ export default {
         })
         .catch(error => {
           this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while deleting the favorite thing");
+          this.setSnackbar("Failed while deleting the favorite thing");
           console.log(error);
         });
       }
       catch(error) {
           this.setFavoriteDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while deleting the favorite thing");
+          this.setSnackbar("Failed while deleting the favorite thing");
           console.log(error);
       }
     },
 
-    getCategories() {
-      try {
-        this.setFavoriteDialogProgress(true, "Loading Categories...");
-        axios.get('/api/category')
-          .then(response => {
-            this.setFavoriteDialogProgress(false, "");
-            this.categories = response.data;
-          })
-          .catch(error => {
-            this.setFavoriteDialogProgress(false, "");
-            this.setSnackbar(true, "Failed while getting the categories");
-            console.log(error);
-          });
-      }
-      catch(error) {
-        this.setFavoriteDialogProgress(false, "");
-        this.setSnackbar(true, "Failed while getting the categories");
-        console.log(error);
-      }
-    },
-
-    saveCategory() {
-      try {
-        this.setCategoryDialogProgress(true, "Saving Category...");
-        axios({
-          method: 'post',
-          url: '/api/category/',
-          headers: {'Content-Type': 'application/json'},
-          data: {
-            name: this.category.name,
-          }
-        })
-        .then(response => {
-          this.setCategoryDialogProgress(false, "");
-          this.setSnackbar(true, "Successfuly created the category " + response.data.name);
-          this.category.name = null;
-          this.category.id = null;
-          this.radioGroup = 1;
-          this.getFavoriteThings();
-        })
-        .catch(error => {
-          this.setCategoryDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while creating the category");
-          console.log(error);
-        });
-      }
-      catch(error) {
-        this.setCategoryDialogProgress(false, "");
-        this.setSnackbar(true, "Failed while creating the category");
-        console.log(error);
-      }
-    },
-
-    updateCategory() {
-      try {
-        this.setCategoryDialogProgress(true, "Updating Category...");
-        axios({
-          method: 'put',
-          url: '/api/category/' + this.category.id + '/',
-          headers: {'Content-Type': 'application/json'},
-          data: {
-            name: this.category.name,
-          }
-        })
-        .then(response => {
-          this.setCategoryDialogProgress(false, "");
-          this.setSnackbar(true, "Successfuly updated the category " + response.data.name);
-          this.category.name = null;
-          this.category.id = null;
-          this.radioGroup = 1;
-          this.getFavoriteThings();
-        })
-        .catch(error => {
-          this.setCategoryDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while updating the category");
-          console.log(error);
-        });
-      }
-      catch(error) {
-        this.setCategoryDialogProgress(false, "");
-        this.setSnackbar(true, "Failed while updating the category");
-        console.log(error);
-      }
-    },
-
-    deleteCategory() {
-      try {
-        this.setCategoryDialogProgress(true, "Deleting Category...");
-        axios({
-          method: 'delete',
-          url: '/api/category/' + this.category.id + '/',
-          headers: {'Content-Type': 'application/json'},
-        })
-        .then(() => {
-          this.setCategoryDialogProgress(false, "");
-          this.setSnackbar(true, "Successfuly deleted the category");
-          this.category.id = null;
-          this.category.name = null;
-          this.radioGroup = 1;
-          this.getFavoriteThings();
-        })
-        .catch(error => {
-          this.setCategoryDialogProgress(false, "");
-          this.setSnackbar(true, "Failed while deleting the category");
-          console.log(error);
-        });
-      }
-      catch(error) {
-        this.setCategoryDialogProgress(false, "");
-        this.setSnackbar(true, "Failed while deleting the category");
-        console.log(error);
-      }
-    },
-
-    setSnackbar(status, message) {
-      this.snackbar = status;
+    setSnackbar(message) {
+      this.snackbar = true;
       this.snackbarResult = message;
     },
 
@@ -517,11 +333,6 @@ export default {
 
     setFavoriteDialogProgress(status, message) {
       this.inFavoriteDialogProgress = status;
-      this.progressMessage = message;
-    },
-
-    setCategoryDialogProgress(status, message) {
-      this.inCategoryDialogProgress = status;
       this.progressMessage = message;
     },
 
@@ -556,38 +367,7 @@ export default {
       }
       this.close();
     },
-
-    closeCategoryDialog() {
-      this.categoryDialog = false;
-    },
-
-    getButtonMessage() {
-      if (this.radioGroup == 1) { 
-        this.radioGroupMessage = 'Save';
-      } else if (this.radioGroup == 2) {
-        this.radioGroupMessage = 'Update';
-      } else if (this.radioGroup == 3) {
-        this.radioGroupMessage = 'Delete';
-      }
-    },
-
-    categoryAction() {
-      if (this.radioGroup == 1) {
-        this.saveCategory();
-      } else if(this.radioGroup == 2) {
-        this.updateCategory();
-      } else if(this.radioGroup == 3) {
-        if (confirm("Are you sure you want to delete this category? " +
-            "By deleting this category all related favorite things will be also deleted.")) {
-          this.deleteCategory();
-        }
-      }
-    }
   },
-
-  initCategoryDialog() {
-    this.getCategories();
-  }
 };
 </script>
 <style>

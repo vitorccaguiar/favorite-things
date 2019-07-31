@@ -1,19 +1,14 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <v-btn  dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
+      <v-btn dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
     </template>
     <v-card>
       <div v-if="inProgress">
         <v-layout justify-center>
-          <h3> {{ progressMessage }} </h3>
+          <h3>{{ progressMessage }}</h3>
         </v-layout>
-        <v-progress-linear
-          color="#0191A9"
-          indeterminate
-          rounded
-          height="6">
-        </v-progress-linear>
+        <v-progress-linear color="#0191A9" indeterminate rounded height="6"></v-progress-linear>
       </div>
       <v-card-title>
         <span class="headline">Manage Metadata</span>
@@ -24,18 +19,9 @@
           <v-layout column>
             <v-flex xs12 sm6 md4>
               <v-radio-group v-model="radioGroup" row @change="getButtonMessage">
-                <v-radio
-                  label="List"
-                  value="1"
-                ></v-radio>
-                <v-radio
-                  label="New"
-                  value="2"
-                ></v-radio>
-                <v-radio
-                  label="Delete"
-                  value="3"
-                ></v-radio>
+                <v-radio label="List" value="1"></v-radio>
+                <v-radio label="New" value="2"></v-radio>
+                <v-radio label="Delete" value="3"></v-radio>
               </v-radio-group>
             </v-flex>
           </v-layout>
@@ -56,29 +42,32 @@ export default {
     inProgress: false,
     progressMessage: "",
     radioGroup: 1,
-    radioGroupMessage: "",
+    radioGroupMessage: "List",
     showList: false
   }),
+
   methods: {
     getButtonMessage() {
-      if (this.radioGroup == 1) { 
-        this.radioGroupMessage = 'List';
+      if (this.radioGroup == 1) {
+        this.radioGroupMessage = "List";
       } else if (this.radioGroup == 2) {
-        this.radioGroupMessage = 'New';
+        this.radioGroupMessage = "New";
       } else if (this.radioGroup == 3) {
-        this.radioGroupMessage = 'Delete';
+        this.radioGroupMessage = "Delete";
       }
     },
+
     close() {
       this.dialog = false;
     },
+
     manageActions() {
       if (this.radioGroup == 1) {
         this.showList = true;
-      } else if(this.radioGroup == 2) {
+      } else if (this.radioGroup == 2) {
         this.showList = false;
         this.updateMetadata();
-      } else if(this.radioGroup == 3) {
+      } else if (this.radioGroup == 3) {
         if (confirm("Are you sure you want to delete this metadata?")) {
           this.showList = false;
           this.deleteMetadata();
@@ -86,17 +75,11 @@ export default {
       }
     },
 
-    getMetadata() {
+    getMetadata() {},
 
-    },
+    updateMatadata() {},
 
-    updateMatadata() {
-
-    },
-
-    deleteMetadata() {
-
-    }
+    deleteMetadata() {}
   }
-}
+};
 </script>
