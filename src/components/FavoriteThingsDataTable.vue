@@ -142,10 +142,7 @@
         <td>{{ props.item.title }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
-        <td class="text-xs-left metadataButton">
-          <v-btn @click="metadataDialog=true" dark color="#0191A9">View</v-btn>
-          <MetadataDialog v-model="metadataDialog"></MetadataDialog>
-        </td>
+        <td class="text-xs-left metadataButton"> <MetadataDialog /> </td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
@@ -177,13 +174,17 @@
 
 <script>
 import axios from 'axios';
+import MetadataDialog from "./MetadataDialog.vue";
 
 export default {
+  components: {
+    MetadataDialog
+  },
+
   data: () => ({
     update: false,
     radioGroup: 1,
     radioGroupMessage: 'Save',
-    metadataDialog: false,
     favoriteThingDialog: false,
     categoryDialog: false,
     snackbar: false,
@@ -367,7 +368,7 @@ export default {
           url: '/api/favoritething/' + favoriteThingId + '/',
           headers: {'Content-Type': 'application/json'},
         })
-        .then(response => {
+        .then(() => {
           this.setFavoriteDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly deleted the favorite thing");
           this.editedItem.title = null;
@@ -483,7 +484,7 @@ export default {
           url: '/api/category/' + this.category.id + '/',
           headers: {'Content-Type': 'application/json'},
         })
-        .then(response => {
+        .then(() => {
           this.setCategoryDialogProgress(false, "");
           this.setSnackbar(true, "Successfuly deleted the category");
           this.category.id = null;

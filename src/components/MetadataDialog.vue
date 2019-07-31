@@ -1,5 +1,8 @@
 <template>
-  <v-dialog :value="value" @input="$emit('input')" max-width="500px">
+  <v-dialog v-model="dialog" max-width="500px">
+    <template v-slot:activator="{ on }">
+      <v-btn  dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
+    </template>
     <v-card>
       <div v-if="inProgress">
         <v-layout justify-center>
@@ -49,13 +52,13 @@
 <script>
 export default {
   data: () => ({
+    dialog: false,
     inProgress: false,
     progressMessage: "",
     radioGroup: 1,
     radioGroupMessage: "",
     showList: false
   }),
-  props: ["value"],
   methods: {
     getButtonMessage() {
       if (this.radioGroup == 1) { 
@@ -67,7 +70,7 @@ export default {
       }
     },
     close() {
-      $emit('input');
+      this.dialog = false;
     },
     manageActions() {
       if (this.radioGroup == 1) {
