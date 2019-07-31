@@ -24,6 +24,18 @@
                 <v-radio name="options" label="Delete" value="3"></v-radio>
               </v-radio-group>
             </v-flex>
+            <v-flex xs12 sm6 md4>
+              <div>
+                <v-text-field v-model="metadata.name" label="Name" :rules="basicRules" autofocus></v-text-field>
+                <v-select
+                  v-model="metadata.type"
+                  :items="metadataTypes"
+                  label="Type"
+                  :rules="basicRules">
+                </v-select>
+                <v-text-field v-model="metadata.value" label="Value" :rules="basicRules"></v-text-field>
+              </div>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-card-text>
@@ -43,7 +55,20 @@ export default {
     progressMessage: "",
     radioGroup: 1,
     radioGroupMessage: "List",
-    showList: false
+    showList: false,
+    metadata: {
+      name: null,
+      type: null,
+      value: null
+    },
+    metadataTypes: [
+      'Text',
+      'Number',
+      'Date'
+    ],
+    basicRules: [
+      v => !!v || 'Required field',
+    ]
   }),
 
   methods: {

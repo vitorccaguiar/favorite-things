@@ -142,6 +142,7 @@ export default {
       { text: "Audit Log", value: "audit_log" },
       { text: "Actions", value: "name" }
     ],
+    categories: [],
     favoriteThings: [],
     editedIndex: -1,
     editedItem: {
@@ -188,6 +189,27 @@ export default {
   },
 
   methods: {
+    getCategories() {
+      try {
+        this.setDialogProgress(true, "Loading Categories...");
+        axios
+          .get("/api/category")
+          .then(response => {
+            this.setDialogProgress(false, "");
+            this.categories = response.data;
+          })
+          .catch(error => {
+            this.setDialogProgress(false, "");
+            this.$emit('setSnackbar', "Failed while getting the categories");
+            console.log(error);
+          });
+      } catch (error) {
+        this.setDialogProgress(false, "");
+        this.$emit('setSnackbar', "Failed while getting the categories");
+        console.log(error);
+      }
+    },
+
     getFavoriteThings() {
       try {
         this.setMainProgress(true, "Loading Favorite Things...");
@@ -370,6 +392,6 @@ export default {
 </script>
 <style>
   .metadataButton {
-    padding: 8px;
+    padding: 8px !important;
   }
 </style>
