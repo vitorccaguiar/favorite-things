@@ -191,21 +191,21 @@ export default {
   methods: {
     getCategories() {
       try {
-        this.setDialogProgress(true, "Loading Categories...");
+        this.setMainProgress(true, "Loading Categories...");
         axios
           .get("/api/category")
           .then(response => {
-            this.setDialogProgress(false, "");
+            this.setMainProgress(false, "");
             this.categories = response.data;
           })
           .catch(error => {
-            this.setDialogProgress(false, "");
-            this.$emit('setSnackbar', "Failed while getting the categories");
+            this.setMainProgress(false, "");
+            this.setSnackbar("Failed while getting the categories");
             console.log(error);
           });
       } catch (error) {
-        this.setDialogProgress(false, "");
-        this.$emit('setSnackbar', "Failed while getting the categories");
+        this.setMainProgress(false, "");
+        this.setSnackbar("Failed while getting the categories");
         console.log(error);
       }
     },
