@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <v-btn dark color="#0191A9" class="mb-2" v-on="on">Manage Category</v-btn>
+      <v-btn @click="getCategories" dark color="#0191A9" class="mb-2" v-on="on">Manage Category</v-btn>
     </template>
     <v-card>
       <div v-if="inProgress">
@@ -73,27 +73,23 @@ export default {
     ]
   }),
 
-  created() {
-    this.getCategories();
-  },
-
   methods: {
     getCategories() {
       try {
-        this.setFavoriteDialogProgress(true, "Loading Categories...");
+        this.setDialogProgress(true, "Loading Categories...");
         axios
           .get("/api/category")
           .then(response => {
-            this.setFavoriteDialogProgress(false, "");
+            this.setDialogProgress(false, "");
             this.categories = response.data;
           })
           .catch(error => {
-            this.setFavoriteDialogProgress(false, "");
+            this.setDialogProgress(false, "");
             this.$emit('setSnackbar', "Failed while getting the categories");
             console.log(error);
           });
       } catch (error) {
-        this.setFavoriteDialogProgress(false, "");
+        this.setDialogProgress(false, "");
         this.$emit('setSnackbar', "Failed while getting the categories");
         console.log(error);
       }
