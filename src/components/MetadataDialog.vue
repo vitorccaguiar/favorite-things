@@ -139,6 +139,7 @@ export default {
         axios
           .get("/api/metadata")
           .then(response => {
+            console.log(response.data);
             this.setDialogProgress(false, "");
             this.metadataArray = response.data;
           })
@@ -219,7 +220,12 @@ export default {
       this.metadata.name = null;
       this.metadata.type = null;
       this.metadata.value = null;
-    }
+    },
+
+    setDialogProgress(status, message) {
+      this.inProgress = status;
+      this.progressMessage = message;
+    },
   }
 };
 </script>
