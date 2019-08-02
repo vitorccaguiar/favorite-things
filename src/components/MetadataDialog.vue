@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <v-btn dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
+      <v-btn @click="getMetadata" dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
     </template>
     <v-card>
       <div v-if="inProgress">
@@ -82,6 +82,8 @@
   </v-dialog>
 </template>
 <script>
+import axios from 'axios';
+
 export default {
   data: () => ({
     dialog: false,
@@ -107,12 +109,12 @@ export default {
     getButtonMessage() {
       if (this.radioGroup == 1) {
         this.radioGroupMessage = "List";
-        this.getMetadata();
       } else if (this.radioGroup == 2) {
         this.radioGroupMessage = "New";
       } else if (this.radioGroup == 3) {
         this.radioGroupMessage = "Delete";
       }
+      this.getMetadata();
     },
 
     close() {
