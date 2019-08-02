@@ -18,9 +18,9 @@
           <v-layout column>
             <v-flex xs12 sm6 md4>
               <v-radio-group v-model="radioGroup" row @change="getButtonMessage">
-                <v-radio name="options" label="New" value="1"></v-radio>
-                <v-radio name="options" label="Update" value="2"></v-radio>
-                <v-radio name="options" label="Delete" value="3"></v-radio>
+                <v-radio name="options" label="New" :value="1"></v-radio>
+                <v-radio name="options" label="Update" :value="2"></v-radio>
+                <v-radio name="options" label="Delete" :value="3"></v-radio>
               </v-radio-group>
             </v-flex>
             <v-flex xs12 sm6 md4>

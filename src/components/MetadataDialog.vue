@@ -19,23 +19,47 @@
           <v-layout column>
             <v-flex xs12 sm6 md4>
               <v-radio-group v-model="radioGroup" row @change="getButtonMessage">
-                <v-radio name="options" label="List" value="1"></v-radio>
-                <v-radio name="options" label="New" value="2"></v-radio>
-                <v-radio name="options" label="Delete" value="3"></v-radio>
+                <v-radio name="options" label="List" :value="1"></v-radio>
+                <v-radio name="options" label="New" :value="2"></v-radio>
+                <v-radio name="options" label="Delete" :value="3"></v-radio>
               </v-radio-group>
             </v-flex>
-            <v-flex xs12 sm6 md4>
-              <div>
-                <v-text-field v-model="metadata.name" label="Name" :rules="basicRules" autofocus></v-text-field>
+            <div v-if="radioGroup == 1">
+              <v-simple-table>
+                <thead>
+                  <tr>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Type</th>
+                    <th class="text-left">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="metadata in metadataArray" :key="metadata">
+                    <td>{{ metadata.name }}</td>
+                    <td>{{ metadata.type }}</td>
+                    <td>{{ metadata.value }}</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </div>
+            <div v-if="radioGroup == 2">
+              <v-flex xs12 sm6 md4>
+                <v-text-field
+                  v-if="radioGroup != 1"
+                  v-model="metadata.name"
+                  label="Name"
+                  :rules="basicRules"
+                  autofocus
+                ></v-text-field>
                 <v-select
                   v-model="metadata.type"
                   :items="metadataTypes"
                   label="Type"
-                  :rules="basicRules">
-                </v-select>
+                  :rules="basicRules"
+                ></v-select>
                 <v-text-field v-model="metadata.value" label="Value" :rules="basicRules"></v-text-field>
-              </div>
-            </v-flex>
+              </v-flex>
+            </div>
           </v-layout>
         </v-container>
       </v-card-text>
@@ -56,25 +80,21 @@ export default {
     radioGroup: 1,
     radioGroupMessage: "List",
     showList: false,
+    metadataArray: [],
     metadata: {
       name: null,
       type: null,
       value: null
     },
-    metadataTypes: [
-      'Text',
-      'Number',
-      'Date'
-    ],
-    basicRules: [
-      v => !!v || 'Required field',
-    ]
+    metadataTypes: ["Text", "Number", "Date"],
+    basicRules: [v => !!v || "Required field"]
   }),
 
   methods: {
     getButtonMessage() {
       if (this.radioGroup == 1) {
         this.radioGroupMessage = "List";
+        this.getMetadata();
       } else if (this.radioGroup == 2) {
         this.radioGroupMessage = "New";
       } else if (this.radioGroup == 3) {
