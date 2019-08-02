@@ -16,6 +16,7 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'ranking', 'created_date', 'modified_date', 'audit_log', 'category', 'category_id')
 
 class MetadataSerializer(serializers.ModelSerializer):
+    favorite_thing = serializers.PrimaryKeyRelatedField(source='favorite_thing',  queryset=Category.objects.all(), write_only=True)
     class Meta:
         model = Metadata
-        fields = '__all__'
+        fields = ('id', 'name', 'type', 'value', 'favorite_thing')

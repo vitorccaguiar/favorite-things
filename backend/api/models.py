@@ -14,5 +14,6 @@ class FavoriteThing(models.Model):
 
 class Metadata(models.Model):
 	key = models.CharField(max_length=50)
-	value = models.CharField(max_length=50)
+	type = models.CharField(max_length=50)
+	value = models.CharField(max_length=100)
 	favorite_thing = models.ForeignKey(FavoriteThing, on_delete=models.CASCADE)

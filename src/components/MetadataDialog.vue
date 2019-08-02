@@ -24,7 +24,7 @@
                 <v-radio name="options" label="Delete" :value="3"></v-radio>
               </v-radio-group>
             </v-flex>
-            <div v-if="radioGroup == 1">
+            <v-flex xs12 sm6 md4 v-if="radioGroup == 1">
               <v-simple-table>
                 <thead>
                   <tr>
@@ -41,25 +41,35 @@
                   </tr>
                 </tbody>
               </v-simple-table>
-            </div>
-            <div v-if="radioGroup == 2">
-              <v-flex xs12 sm6 md4>
-                <v-text-field
-                  v-if="radioGroup != 1"
-                  v-model="metadata.name"
-                  label="Name"
-                  :rules="basicRules"
-                  autofocus
-                ></v-text-field>
-                <v-select
-                  v-model="metadata.type"
-                  :items="metadataTypes"
-                  label="Type"
-                  :rules="basicRules"
-                ></v-select>
-                <v-text-field v-model="metadata.value" label="Value" :rules="basicRules"></v-text-field>
-              </v-flex>
-            </div>
+            </v-flex>
+            <v-flex xs12 sm6 md4 v-if="radioGroup == 2">
+              <v-text-field
+                v-model="metadata.name"
+                label="Name"
+                :rules="basicRules"
+                autofocus
+              ></v-text-field>
+              <v-select
+                v-model="metadata.type"
+                :items="metadataTypes"
+                label="Type"
+                :rules="basicRules"
+              ></v-select>
+              <v-text-field
+                v-model="metadata.value"
+                label="Value"
+                :rules="basicRules"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6 md4 v-if="radioGroup == 3">
+              <v-select
+                v-model="metadata.id"
+                :items="metadata"
+                item-text="name"
+                item-value="id"
+                label="Select a metadata"
+              ></v-select>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-card-text>
@@ -82,13 +92,16 @@ export default {
     showList: false,
     metadataArray: [],
     metadata: {
+      id: null,
       name: null,
       type: null,
-      value: null
+      value: null,
     },
     metadataTypes: ["Text", "Number", "Date"],
     basicRules: [v => !!v || "Required field"]
   }),
+
+  props: ['favoriteThing'],
 
   methods: {
     getButtonMessage() {
@@ -120,11 +133,93 @@ export default {
       }
     },
 
-    getMetadata() {},
+    getMetadata() {
+      try {
+        this.setDialogProgress(true, "Loading Metadata...");
+        axios
+          .get("/api/metadata")
+          .then(response => {
+            this.setDialogProgress(false, "");
+            this.metadataArray = response.data;
+          })
+          .catch(error => {
+            this.setDialogProgress(false, "");
+            this.$emit('setSnackbar', "Failed while getting the metadata");
+            console.log(error);
+          });
+      } catch (error) {
+        this.setDialogProgress(false, "");
+        this.$emit('setSnackbar', "Failed while getting the metadata");
+        console.log(error);
+      }
+    },
 
-    updateMatadata() {},
+    saveMatadata() {
+      try {
+        this.setDialogProgress(true, "Saving Metadata...");
+        axios({
+          method: "post",
+          url: "/api/metadata/",
+          headers: { "Content-Type": "application/json" },
+          data: {
+            name: this.metadata.name,
+            type: this.metadata.type,
+            value: this.metadata.value,
+            favorite_thing: this.favoriteThing,
+          }
+        })
+          .then(response => {
+            this.setDialogProgress(false, "");
+            this.$emit('setSnackbar', "Successfuly created the metadata " + response.data.name);
+            this.cleanFields();
+            this.radioGroup = 1;
+          })
+          .catch(error => {
+            this.setDialogProgress(false, "");
+            this.$emit('setSnackbar', "Failed while creating the metadata");
+            console.log(error);
+          });
+      } catch (error) {
+        this.setDialogProgress(false, "");
+        this.$emit('setSnackbar', "Failed while creating the metadata");
+        console.log(error);
+      }
+    },
 
-    deleteMetadata() {}
+    deleteMetadata() {
+      try {
+        this.setDialogProgress(true, "Deleting Metadata...");
+        axios({
+          method: "delete",
+          url: "/api/metadata/" + this.metadata.id + "/",
+          headers: { "Content-Type": "application/json" }
+        })
+          .then(() => {
+            this.setDialogProgress(false, "");
+            this.$emit('setSnackbar', "Successfuly deleted the metadata");
+            this.cleanFields();
+            this.radioGroup = 1;
+            this.getCategories();
+            this.$emit('getFavoriteThings');
+          })
+          .catch(error => {
+            this.setDialogProgress(false, "");
+            this.$emit('setSnackbar', "Failed while deleting the category");
+            console.log(error);
+          });
+      } catch (error) {
+        this.setDialogProgress(false, "");
+        this.$emit('setSnackbar', "Failed while deleting the category");
+        console.log(error);
+      }
+    },
+
+    cleanFields() {
+      this.metadata.id = null;
+      this.metadata.name = null;
+      this.metadata.type = null;
+      this.metadata.value = null;
+    }
   }
 };
 </script>

@@ -109,8 +109,7 @@ export default {
           .then(response => {
             this.setDialogProgress(false, "");
             this.$emit('setSnackbar', "Successfuly created the category " + response.data.name);
-            this.category.name = null;
-            this.category.id = null;
+            this.cleanFields();
             this.radioGroup = 1;
             this.getCategories();
             this.$emit('getFavoriteThings');
@@ -141,8 +140,7 @@ export default {
           .then(response => {
             this.setDialogProgress(false, "");
             this.$emit('setSnackbar', "Successfuly updated the category " + response.data.name);
-            this.category.name = null;
-            this.category.id = null;
+            this.cleanFields();
             this.radioGroup = 1;
             this.getCategories();
             this.$emit('getFavoriteThings');
@@ -170,8 +168,7 @@ export default {
           .then(() => {
             this.setDialogProgress(false, "");
             this.$emit('setSnackbar', "Successfuly deleted the category");
-            this.category.id = null;
-            this.category.name = null;
+            this.cleanFields();
             this.radioGroup = 1;
             this.getCategories();
             this.$emit('getFavoriteThings');
@@ -219,6 +216,11 @@ export default {
     close() {
       this.dialog = false;
     },
+
+    cleanFields() {
+      this.category.id = null;
+      this.category.name = null;
+    }
   }
 };
 </script>
