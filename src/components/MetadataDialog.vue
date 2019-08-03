@@ -150,7 +150,7 @@ export default {
       }
     },
 
-    saveMatadata() {
+    saveMetadata() {
       try {
         this.setDialogProgress(true, "Saving Metadata...");
         axios({
