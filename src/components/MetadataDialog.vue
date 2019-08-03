@@ -76,7 +76,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-        <v-btn color="blue darken-1" flat @click="manageActions">{{radioGroupMessage}}</v-btn>
+        <v-btn color="blue darken-1" v-if="radioGroup != 1" flat @click="manageActions">{{radioGroupMessage}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -90,8 +90,7 @@ export default {
     inProgress: false,
     progressMessage: "",
     radioGroup: 1,
-    radioGroupMessage: "List",
-    showList: false,
+    radioGroupMessage: "",
     metadataArray: [],
     metadata: {
       id: null,
@@ -107,14 +106,11 @@ export default {
 
   methods: {
     getButtonMessage() {
-      if (this.radioGroup == 1) {
-        this.radioGroupMessage = "List";
-      } else if (this.radioGroup == 2) {
+      if (this.radioGroup == 2) {
         this.radioGroupMessage = "New";
       } else if (this.radioGroup == 3) {
         this.radioGroupMessage = "Delete";
       }
-      this.getMetadata();
     },
 
     close() {
@@ -122,17 +118,14 @@ export default {
     },
 
     manageActions() {
-      if (this.radioGroup == 1) {
-        this.showList = true;
-      } else if (this.radioGroup == 2) {
-        this.showList = false;
-        this.updateMetadata();
+      if (this.radioGroup == 2) {
+        this.saveMetadata();
       } else if (this.radioGroup == 3) {
         if (confirm("Are you sure you want to delete this metadata?")) {
-          this.showList = false;
           this.deleteMetadata();
         }
       }
+      this.getMetadata();
     },
 
     getMetadata() {
