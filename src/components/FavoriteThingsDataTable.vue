@@ -86,7 +86,7 @@
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
         <td class="text-xs-left">{{ props.item.audit_log }}</td>
-        <td class="justify-center align-center layout px-0">
+        <td class="align-center layout" style="height: 66px;">
           <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
           <v-icon small @click="deleteItem(props.item)">delete</v-icon>
         </td>

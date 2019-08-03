@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px">
+  <v-dialog v-model="dialog" max-width="700px">
     <template v-slot:activator="{ on }">
       <v-btn @click="getMetadata" dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
     </template>
@@ -11,7 +11,7 @@
         <v-progress-linear color="#0191A9" indeterminate rounded height="6"></v-progress-linear>
       </div>
       <v-card-title>
-        <span class="headline">Manage Metadata</span>
+        <span class="headline">Manage Metadata for {{favoriteThing.title}}</span>
       </v-card-title>
 
       <v-card-text>
