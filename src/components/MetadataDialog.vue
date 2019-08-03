@@ -64,7 +64,7 @@
             <v-flex xs12 sm6 md4 v-if="radioGroup == 3">
               <v-select
                 v-model="metadata.id"
-                :items="metadata"
+                :items="metadataArray"
                 item-text="name"
                 item-value="id"
                 label="Select a metadata"
