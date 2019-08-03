@@ -25,22 +25,13 @@
               </v-radio-group>
             </v-flex>
             <v-flex xs12 sm6 md4 v-if="radioGroup == 1">
-              <v-simple-table>
-                <thead>
-                  <tr>
-                    <th class="text-left">Name</th>
-                    <th class="text-left">Type</th>
-                    <th class="text-left">Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="metadata in metadataArray" :key="metadata">
-                    <td>{{ metadata.key }}</td>
-                    <td>{{ metadata.type }}</td>
-                    <td>{{ metadata.value }}</td>
-                  </tr>
-                </tbody>
-              </v-simple-table>
+              <v-data-table :headers="headers" :items="metadataArray" class="elevation-1">
+                <template v-slot:items="props">
+                  <td>{{ props.item.name }}</td>
+                  <td class="text-xs-left">{{ props.item.type }}</td>
+                  <td class="text-xs-left">{{ props.item.value }}</td>
+                </template>
+              </v-data-table>
             </v-flex>
             <v-flex xs12 sm6 md4 v-if="radioGroup == 2">
               <v-text-field
@@ -99,7 +90,16 @@ export default {
       value: null,
     },
     metadataTypes: ["Text", "Number", "Date"],
-    basicRules: [v => !!v || "Required field"]
+    basicRules: [v => !!v || "Required field"],
+    headers: [
+      {
+        text: "Name",
+        align: "left",
+        sortable: true,
+        value: "name"
+      },
+      { text: "Type", value: "type" },
+      { text: "Value", value: "value" },
   }),
 
   props: ['favoriteThing'],
