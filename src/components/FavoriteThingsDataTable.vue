@@ -197,7 +197,11 @@ export default {
       description: null,
       ranking: null,
       category: null,
-      metadata: null
+      metadata: {
+        key: null,
+        type: null,
+        value: null
+      }
     },
     defaultItem: {
       title: "",
