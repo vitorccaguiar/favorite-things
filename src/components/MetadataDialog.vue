@@ -27,7 +27,7 @@
             <v-flex xs12 sm6 md4 v-if="radioGroup == 1">
               <v-data-table :headers="headers" :items="metadataArray" class="elevation-1">
                 <template v-slot:items="props">
-                  <td>{{ props.item.name }}</td>
+                  <td>{{ props.item.key }}</td>
                   <td class="text-xs-left">{{ props.item.type }}</td>
                   <td class="text-xs-left">{{ props.item.value }}</td>
                 </template>
@@ -56,7 +56,7 @@
               <v-select
                 v-model="metadata.id"
                 :items="metadataArray"
-                item-text="name"
+                item-text="key"
                 item-value="id"
                 label="Select a metadata"
               ></v-select>
@@ -135,7 +135,6 @@ export default {
         axios
           .get("/api/metadata")
           .then(response => {
-            console.log(response.data);
             this.setDialogProgress(false, "");
             this.metadataArray = response.data;
           })
