@@ -47,10 +47,16 @@
                 :rules="basicRules"
               ></v-select>
               <v-text-field
+                v-if="metadata.type !== 'Date'"
                 v-model="metadata.value"
                 label="Value"
                 :rules="basicRules"
               ></v-text-field>
+              <v-date-picker
+                v-if="metadata.type === 'Date'"
+                v-model="metadata.value"
+              >
+              </v-date-picker>
             </v-flex>
             <v-flex xs12 sm6 md4 v-if="radioGroup == 3">
               <v-select
