@@ -15,7 +15,7 @@
       <v-spacer></v-spacer>
       <v-dialog v-model="favoriteThingDialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn @click="getCategories" color="#0191A9" class="mb-2" v-on="on">New Favorite Thing</v-btn>
+          <v-btn @click="getCategories" dark color="#0191A9" class="mb-2" v-on="on">New Favorite Thing</v-btn>
         </template>
         <v-card>
           <div v-if="inFavoriteDialogProgress">

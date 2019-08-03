@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-toolbar color="#0191A9">
+    <v-toolbar dark color="#0191A9">
       <v-layout align-center justify-center fill-height>
         <v-toolbar-title class="white--text">Favorite Things</v-toolbar-title>
       </v-layout>

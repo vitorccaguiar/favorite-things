@@ -14,7 +14,6 @@ Vue.use(Vuetify, {
 Vue.config.productionTip = false
 
 const vue = new Vue({
-  vuetify: new Vuetify(),
   router,
   render: h => h(App)
 })
