@@ -100,6 +100,7 @@ export default {
       },
       { text: "Type", value: "type" },
       { text: "Value", value: "value" },
+    ]
   }),
 
   props: ['favoriteThing'],
