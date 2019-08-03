@@ -161,7 +161,7 @@ export default {
             key: this.metadata.name,
             type: this.metadata.type,
             value: this.metadata.value,
-            favorite_thing: this.favoriteThing,
+            favorite_thing: this.favoriteThing.id,
           }
         })
           .then(response => {
