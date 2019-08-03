@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="700px">
     <template v-slot:activator="{ on }">
-      <v-btn @click="getMetadata" dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
+      <v-btn @click="initDialog" dark color="#0191A9" class="mb-2" v-on="on">View</v-btn>
     </template>
     <v-card>
       <div v-if="inProgress">
@@ -134,6 +134,11 @@ export default {
   props: ['favoriteThing'],
 
   methods: {
+    initDialog() {
+      this.getMetadata();
+      radioGroup = 1;
+    },
+
     getButtonMessage() {
       if (this.radioGroup == 2) {
         this.radioGroupMessage = "New";
@@ -154,6 +159,7 @@ export default {
           this.deleteMetadata();
         }
       }
+      dialog = false;
       this.getMetadata();
     },
 

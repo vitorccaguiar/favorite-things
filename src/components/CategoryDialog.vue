@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ on }">
-      <v-btn @click="getCategories" dark color="#0191A9" class="mb-2" v-on="on">Manage Category</v-btn>
+      <v-btn @click="initDialog" dark color="#0191A9" class="mb-2" v-on="on">Manage Category</v-btn>
     </template>
     <v-card>
       <div v-if="inProgress">
@@ -74,6 +74,11 @@ export default {
   }),
 
   methods: {
+    initDialog() {
+      this.getCategories();
+      radioGroup = 1;
+    },
+
     getCategories() {
       try {
         this.setDialogProgress(true, "Loading Categories...");
@@ -196,6 +201,7 @@ export default {
           this.deleteCategory();
         }
       }
+      dialog = false;
     },
 
     setDialogProgress(status, message) {

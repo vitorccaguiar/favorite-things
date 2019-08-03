@@ -60,8 +60,52 @@
                     :rules="basicRules">
                   </v-select>
                 </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.metadata" label="Metadata"></v-text-field>
+                <v-flex xs12 sm6 md4 v-if="update === false">
+                  <v-text-field label="Metadata" readonly></v-text-field>
+                  <v-text-field
+                    v-model="editedItem.metadata.key"
+                    label="Name"
+                    :rules="basicRules"
+                    autofocus
+                  ></v-text-field>
+                  <v-select
+                    v-model="editedItem.metadata.type"
+                    :items="metadataTypes"
+                    label="Type"
+                    :rules="basicRules"
+                  ></v-select>
+                  <v-text-field
+                    v-if="editedItem.metadata.type !== 'Date'"
+                    v-model="editedItem.metadata.value"
+                    label="Value"
+                    :rules="basicRules"
+                  ></v-text-field>
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    :return-value.sync="editedItem.metadata.value"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                  >
+                    <template v-if="editedItem.metadata.type === 'Date'" v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="editedItem.metadata.value"
+                        label="Value"
+                        readonly
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="editedItem.metadata.value" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                      <v-btn flat color="primary" @click="$refs.menu.save(editedItem.metadata.value)">OK</v-btn>
+                    </v-date-picker>
+                  </v-menu>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -123,6 +167,7 @@ export default {
   },
 
   data: () => ({
+    menu: false,
     update: false,
     favoriteThingDialog: false,
     snackbar: false,
@@ -144,6 +189,7 @@ export default {
     ],
     categories: [],
     favoriteThings: [],
+    metadataTypes: ["Text", "Number", "Date"],
     editedIndex: -1,
     editedItem: {
       id: null,
@@ -252,11 +298,7 @@ export default {
           .then(response => {
             this.setFavoriteDialogProgress(false, "");
             this.setSnackbar("Successfuly created the favorite thing " + response.data.title);
-            this.editedItem.title = null;
-            this.editedItem.description = null;
-            this.editedItem.ranking = null;
-            this.editedItem.category = null;
-            this.editedItem.metadata = null;
+            this.cleanFields();
             this.favoriteThingDialog = false;
             this.getFavoriteThings();
           })
@@ -321,11 +363,7 @@ export default {
         .then(() => {
           this.setFavoriteDialogProgress(false, "");
           this.setSnackbar("Successfuly deleted the favorite thing");
-          this.editedItem.title = null;
-          this.editedItem.description = null;
-          this.editedItem.ranking = null;
-          this.editedItem.category = null;
-          this.editedItem.metadata = null;
+          this.cleanFields();
           this.getFavoriteThings();
         })
         .catch(error => {
@@ -387,6 +425,14 @@ export default {
       }
       this.close();
     },
+
+    cleanFields() {
+      this.editedItem.title = null;
+      this.editedItem.description = null;
+      this.editedItem.ranking = null;
+      this.editedItem.category = null;
+      this.editedItem.metadata = null;
+    }
   },
 };
 </script>
