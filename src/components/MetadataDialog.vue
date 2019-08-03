@@ -52,11 +52,33 @@
                 label="Value"
                 :rules="basicRules"
               ></v-text-field>
-              <v-date-picker
-                v-if="metadata.type === 'Date'"
-                v-model="metadata.value"
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="date"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
               >
-              </v-date-picker>
+                <template v-if="metadata.type === 'Date'" v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="metadata.type"
+                    label="Value"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="metadata.type" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                  <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                </v-date-picker>
+              </v-menu>
             </v-flex>
             <v-flex xs12 sm6 md4 v-if="radioGroup == 3">
               <v-select
@@ -83,6 +105,7 @@ import axios from 'axios';
 
 export default {
   data: () => ({
+    menu: false,
     dialog: false,
     inProgress: false,
     progressMessage: "",
