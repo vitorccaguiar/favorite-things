@@ -57,7 +57,7 @@
                 v-model="menu"
                 :close-on-content-click="false"
                 :nudge-right="40"
-                :return-value.sync="date"
+                :return-value.sync="metadata.value"
                 lazy
                 transition="scale-transition"
                 offset-y
@@ -66,17 +66,16 @@
               >
                 <template v-if="metadata.type === 'Date'" v-slot:activator="{ on }">
                   <v-text-field
-                    v-model="metadata.type"
+                    v-model="metadata.value"
                     label="Value"
-                    prepend-icon="event"
                     readonly
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="metadata.type" no-title scrollable>
+                <v-date-picker v-model="metadata.value" no-title scrollable>
                   <v-spacer></v-spacer>
                   <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                  <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                  <v-btn flat color="primary" @click="$refs.menu.save(metadata.value)">OK</v-btn>
                 </v-date-picker>
               </v-menu>
             </v-flex>
