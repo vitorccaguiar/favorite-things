@@ -136,7 +136,7 @@ export default {
   methods: {
     initDialog() {
       this.getMetadata();
-      radioGroup = 1;
+      this.radioGroup = 1;
     },
 
     getButtonMessage() {
@@ -159,7 +159,7 @@ export default {
           this.deleteMetadata();
         }
       }
-      dialog = false;
+      this.dialog = false;
       this.getMetadata();
     },
 

@@ -76,7 +76,7 @@ export default {
   methods: {
     initDialog() {
       this.getCategories();
-      radioGroup = 1;
+      this.radioGroup = 1;
     },
 
     getCategories() {
@@ -201,7 +201,7 @@ export default {
           this.deleteCategory();
         }
       }
-      dialog = false;
+      this.dialog = false;
     },
 
     setDialogProgress(status, message) {

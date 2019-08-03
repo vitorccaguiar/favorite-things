@@ -61,7 +61,7 @@
                   </v-select>
                 </v-flex>
                 <v-flex xs12 sm6 md4 v-if="update === false">
-                  <v-text-field label="Metadata" readonly></v-text-field>
+                  <span class="headline">Metadata</span>
                   <v-text-field
                     v-model="editedItem.metadata.key"
                     label="Name"
