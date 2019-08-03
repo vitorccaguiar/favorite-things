@@ -11,6 +11,7 @@ class FavoriteThingViewSet(viewsets.ModelViewSet):
     serializer_class = FavoriteThingSerializer
 
 class MetadataViewSet(viewsets.ModelViewSet):
+    queryset = Metadata.objects.all()
     serializer_class = MetadataSerializer
 
     def get_queryset(self):
