@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="metadata in metadataArray" :key="metadata">
-                    <td>{{ metadata.name }}</td>
+                    <td>{{ metadata.key }}</td>
                     <td>{{ metadata.type }}</td>
                     <td>{{ metadata.value }}</td>
                   </tr>
@@ -44,7 +44,7 @@
             </v-flex>
             <v-flex xs12 sm6 md4 v-if="radioGroup == 2">
               <v-text-field
-                v-model="metadata.name"
+                v-model="metadata.key"
                 label="Name"
                 :rules="basicRules"
                 autofocus
@@ -94,7 +94,7 @@ export default {
     metadataArray: [],
     metadata: {
       id: null,
-      name: null,
+      key: null,
       type: null,
       value: null,
     },
@@ -158,7 +158,7 @@ export default {
           url: "/api/metadata/",
           headers: { "Content-Type": "application/json" },
           data: {
-            key: this.metadata.name,
+            key: this.metadata.key,
             type: this.metadata.type,
             value: this.metadata.value,
             favorite_thing: this.favoriteThing.id,
@@ -212,7 +212,7 @@ export default {
 
     cleanFields() {
       this.metadata.id = null;
-      this.metadata.name = null;
+      this.metadata.key = null;
       this.metadata.type = null;
       this.metadata.value = null;
     },
