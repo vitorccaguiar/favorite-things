@@ -158,7 +158,7 @@ export default {
           url: "/api/metadata/",
           headers: { "Content-Type": "application/json" },
           data: {
-            name: this.metadata.name,
+            key: this.metadata.name,
             type: this.metadata.type,
             value: this.metadata.value,
             favorite_thing: this.favoriteThing,
@@ -166,7 +166,7 @@ export default {
         })
           .then(response => {
             this.setDialogProgress(false, "");
-            this.$emit('setSnackbar', "Successfuly created the metadata " + response.data.name);
+            this.$emit('setSnackbar', "Successfuly created the metadata " + response.data.key);
             this.cleanFields();
             this.radioGroup = 1;
           })

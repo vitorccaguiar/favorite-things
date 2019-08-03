@@ -81,7 +81,7 @@
         <td>{{ props.item.title }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-left">{{ props.item.ranking }}</td>
-        <td class="text-xs-left metadataButton"> <MetadataDialog favoriteThing="props.item"/> </td>
+        <td class="text-xs-left metadataButton"> <MetadataDialog :favoriteThing="props.item"/> </td>
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
