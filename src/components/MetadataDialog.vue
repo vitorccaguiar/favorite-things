@@ -167,7 +167,7 @@ export default {
       try {
         this.setDialogProgress(true, "Loading Metadata...");
         axios
-          .get("/api/metadata/?favorite_thing=" + this.favoriteThing)
+          .get("/api/metadata/?favorite_thing=" + this.favoriteThing.id)
           .then(response => {
             this.setDialogProgress(false, "");
             this.metadataArray = response.data;
