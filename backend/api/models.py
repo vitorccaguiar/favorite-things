@@ -18,7 +18,6 @@ class Metadata(models.Model):
   favorite_thing = models.ForeignKey(FavoriteThing, on_delete=models.CASCADE)
 
 class AuditLog(models.Model):
-  related_model_name = models.CharField(max_length=50)
   action_performed = models.CharField(max_length=50)
   created_date = models.DateField(auto_now_add=True)
   favorite_thing =  models.ForeignKey(FavoriteThing, on_delete=models.CASCADE)
