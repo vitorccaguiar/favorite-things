@@ -16,8 +16,9 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'ranking', 'created_date', 'modified_date', 'category', 'category_id')
 
     def create(self, validated_data):
-        ft = FavoriteThing.objects.create(**validated_data)
-        AuditLog.objects.create(action_performed='POST', favorite_thing=ft)
+        obj = FavoriteThing.objects.create(**validated_data)
+        AuditLog.objects.create(action_performed='POST', favorite_thing=obj)
+        return obj
 
 class MetadataSerializer(serializers.ModelSerializer):
     favorite_thing = serializers.PrimaryKeyRelatedField(queryset=FavoriteThing.objects.all(), write_only=True)
