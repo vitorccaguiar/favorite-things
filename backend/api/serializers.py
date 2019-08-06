@@ -21,7 +21,7 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
         return obj
 
     def update(self, instance, validated_data):
-        obj = FavoriteThing.objects.create(**validated_data)
+        obj = FavoriteThing.objects.update(**validated_data)
         AuditLog.objects.create(action_performed='PUT', favorite_thing=obj)
         return obj
 

@@ -433,7 +433,9 @@ export default {
       this.editedItem.description = null;
       this.editedItem.ranking = null;
       this.editedItem.category = null;
-      this.editedItem.metadata = null;
+      this.editedItem.metadata.key = '';
+      this.editedItem.metadata.type = '';
+      this.editedItem.metadata.value = '';
     }
   },
 };
