@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         Category.objects.create(**validated_data)
-        Category.objects.create(related_model_name='Category', action_performed='POST', favorite_thing=validated_data['id'])
+        AuditLog.objects.create(related_model_name='Category', action_performed='POST', favorite_thing=validated_data['id'])
 
 class FavoriteThingSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)

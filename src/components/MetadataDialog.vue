@@ -56,7 +56,7 @@
               <v-menu
                 ref="menu"
                 v-model="menu"
-                :close-on-content-click="true"
+                :close-on-content-click="false"
                 :nudge-right="40"
                 :return-value.sync="metadata.value"
                 lazy
