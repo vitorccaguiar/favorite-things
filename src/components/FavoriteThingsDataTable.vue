@@ -198,9 +198,9 @@ export default {
       ranking: null,
       category: null,
       metadata: {
-        key: null,
-        type: null,
-        value: null
+        key: '',
+        type: '',
+        value: ''
       }
     },
     defaultItem: {
