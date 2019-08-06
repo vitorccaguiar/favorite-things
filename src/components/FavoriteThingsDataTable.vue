@@ -433,9 +433,11 @@ export default {
       this.editedItem.description = null;
       this.editedItem.ranking = null;
       this.editedItem.category = null;
-      this.editedItem.metadata.key = '';
-      this.editedItem.metadata.type = '';
-      this.editedItem.metadata.value = '';
+      this.editItem.metadata = {
+        key: '',
+        type: '',
+        value: ''
+      }
     }
   },
 };
