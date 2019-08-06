@@ -60,7 +60,7 @@
                     :rules="basicRules">
                   </v-select>
                 </v-flex>
-                <v-flex xs12 sm6 md4 v-if="update === false">
+                <v-flex style="margin-top: 30px" xs12 sm6 md4 v-if="update === false">
                   <span class="headline">Metadata</span>
                   <v-text-field
                     v-model="editedItem.metadata.key"
@@ -241,20 +241,20 @@ export default {
   methods: {
     getCategories() {
       try {
-        this.setMainProgress(true, "Loading Categories...");
+        this.setFavoriteDialogProgress(true, "Loading Categories...");
         axios
           .get("/api/category")
           .then(response => {
-            this.setMainProgress(false, "");
+            this.setFavoriteDialogProgress(false, "");
             this.categories = response.data;
           })
           .catch(error => {
-            this.setMainProgress(false, "");
+            this.setFavoriteDialogProgress(false, "");
             this.setSnackbar("Failed while getting the categories");
             console.log(error);
           });
       } catch (error) {
-        this.setMainProgress(false, "");
+        this.setFavoriteDialogProgress(false, "");
         this.setSnackbar("Failed while getting the categories");
         console.log(error);
       }

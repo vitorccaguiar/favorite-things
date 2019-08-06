@@ -217,6 +217,7 @@ export default {
       } else if (this.radioGroup == 3) {
         this.radioGroupMessage = 'Delete';
       }
+      this.cleanFields();
     },
 
     close() {

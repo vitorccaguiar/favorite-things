@@ -45,6 +45,7 @@
                 :items="metadataTypes"
                 label="Type"
                 :rules="basicRules"
+                @change="metadata.value = null"
               ></v-select>
               <v-text-field
                 v-if="metadata.type !== 'Date'"
@@ -55,7 +56,7 @@
               <v-menu
                 ref="menu"
                 v-model="menu"
-                :close-on-content-click="false"
+                :close-on-content-click="true"
                 :nudge-right="40"
                 :return-value.sync="metadata.value"
                 lazy
@@ -159,7 +160,6 @@ export default {
           this.deleteMetadata();
         }
       }
-      this.dialog = false;
       this.getMetadata();
     },
 
@@ -229,7 +229,6 @@ export default {
             this.$emit('setSnackbar', "Successfuly deleted the metadata");
             this.cleanFields();
             this.radioGroup = 1;
-            this.getCategories();
             this.$emit('getFavoriteThings');
           })
           .catch(error => {
