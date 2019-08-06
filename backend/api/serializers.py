@@ -20,6 +20,11 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
         AuditLog.objects.create(action_performed='POST', favorite_thing=obj)
         return obj
 
+    def update(self, instance, validated_data):
+        obj = FavoriteThing.objects.create(**validated_data)
+        AuditLog.objects.create(action_performed='PUT', favorite_thing=obj)
+        return obj
+
 class MetadataSerializer(serializers.ModelSerializer):
     favorite_thing = serializers.PrimaryKeyRelatedField(queryset=FavoriteThing.objects.all(), write_only=True)
     class Meta:
