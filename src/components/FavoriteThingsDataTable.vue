@@ -129,7 +129,7 @@
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
-        <td class="text-xs-left">{{ props.item.audit_log }}</td>
+        <td class="text-xs-left">Test</td>
         <td class="align-center layout" style="height: 66px;">
           <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
           <v-icon small @click="deleteItem(props.item)">delete</v-icon>
@@ -296,7 +296,6 @@ export default {
               description: this.editedItem.description,
               ranking: this.editedItem.ranking,
               category_id: this.editedItem.category,
-              audit_log: "Loging",
             }
           })
           .then(response => {
@@ -332,7 +331,6 @@ export default {
             description: this.editedItem.description,
             ranking: this.editedItem.ranking,
             category_id: this.editedItem.category.id,
-            audit_log: "Loging"
           }
         })
         .then(response => {
