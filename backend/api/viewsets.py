@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Category, FavoriteThing, Metadata
-from .serializers import CategorySerializer, FavoriteThingSerializer, MetadataSerializer
+from .models import Category, FavoriteThing, Metadata, AuditLog
+from .serializers import CategorySerializer, FavoriteThingSerializer, MetadataSerializer, AuditLogSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -17,3 +17,7 @@ class MetadataViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         favorite_thing = self.request.query_params.get('favorite_thing')
         return Metadata.objects.all().filter(favorite_thing__id=favorite_thing)
+
+class AuditLogViewSet(viewsets.ModelViewSet):
+    queryset = AuditLog.objects.all()
+    serializer_class = AuditLogSerializer

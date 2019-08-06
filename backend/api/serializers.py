@@ -1,11 +1,15 @@
 from rest_framework import serializers
-from .models import Category, FavoriteThing, Metadata
+from .models import Category, FavoriteThing, Metadata, AuditLog
 import logging
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name')
+
+    def create(self, validated_data):
+        Category.objects.create(**validated_data)
+        Category.objects.create(related_model_name='Category', action_performed='POST', favorite_thing=validated_data['id'])
 
 class FavoriteThingSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
@@ -20,3 +24,8 @@ class MetadataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Metadata
         fields = ('id', 'key', 'type', 'value', 'favorite_thing')
+
+class AuditLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuditLog
+        fields = ('id', 'related_model_name', 'action_performed', 'created_date', 'favorite_thing')
