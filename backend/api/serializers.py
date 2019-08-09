@@ -21,6 +21,10 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
         return obj
 
     def update(self, instance, validated_data):
+        logger = logging.getLogger('django')
+        logger.info('Test')
+        logger.info(instance)
+        logger.info(validated_data)
         instance.save()
         AuditLog.objects.create(action_performed='PUT', favorite_thing=instance)
         return instance
