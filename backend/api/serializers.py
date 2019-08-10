@@ -16,11 +16,17 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'ranking', 'created_date', 'modified_date', 'category', 'category_id')
 
     def create(self, validated_data):
+        logger = logging.getLogger('django')
+        logger.info('Vitor create')
+        logger.info(self)
         obj = FavoriteThing.objects.create(**validated_data)
         AuditLog.objects.create(action_performed='POST', favorite_thing=obj)
         return obj
 
     def update(self, instance, validated_data):
+        logger = logging.getLogger('django')
+        logger.info('Vitor update')
+        logger.info(self)
         FavoriteThing.objects.update(instance, validated_data)
         AuditLog.objects.create(action_performed='PUT', favorite_thing=instance)
         return instance
