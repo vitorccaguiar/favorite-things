@@ -16,20 +16,19 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'ranking', 'created_date', 'modified_date', 'category', 'category_id')
 
     def create(self, validated_data):
-        logger = logging.getLogger('django')
-        logger.info('Vitor create')
-        logger.info(self)
+        favorite_things = FavoriteThing.objects.filter(category=validated_data['category'])
+        for favorite_thing in favorite_things:
+            if favorite_thing.ranking >= validated_data['ranking']:
+                favorite_thing.ranking += 1
+                favorite_thing.save()
         obj = FavoriteThing.objects.create(**validated_data)
         AuditLog.objects.create(action_performed='POST', favorite_thing=obj)
         return obj
 
-    def update(self, instance, validated_data):
-        logger = logging.getLogger('django')
-        logger.info('Vitor update')
-        logger.info(self)
-        FavoriteThing.objects.update(instance, validated_data)
-        AuditLog.objects.create(action_performed='PUT', favorite_thing=instance)
-        return instance
+    # def update(self, instance, validated_data):
+    #     FavoriteThing.objects.update(instance, validated_data)
+    #     AuditLog.objects.create(action_performed='PUT', favorite_thing=instance)
+    #     return instance
 
 class MetadataSerializer(serializers.ModelSerializer):
     favorite_thing = serializers.PrimaryKeyRelatedField(queryset=FavoriteThing.objects.all(), write_only=True)
