@@ -60,7 +60,7 @@
                     :rules="basicRules">
                   </v-select>
                 </v-flex>
-                <v-flex style="margin-top: 30px" xs12 sm6 md4 v-if="update === false">
+                <v-flex style="margin-top: 30px" xs12 sm6 md4>
                   <span class="headline">Metadata</span>
                   <v-text-field
                     v-model="editedItem.metadata.key"
@@ -73,6 +73,7 @@
                     :items="metadataTypes"
                     label="Type"
                     :rules="basicRules"
+                    @change="editedItem.metadata.value = null"
                   ></v-select>
                   <v-text-field
                     v-if="editedItem.metadata.type !== 'Date'"
@@ -244,6 +245,7 @@ export default {
 
   methods: {
     getCategories() {
+      this.update = false;
       try {
         this.setFavoriteDialogProgress(true, "Loading Categories...");
         axios
