@@ -22,13 +22,8 @@ class FavoriteThingSerializer(serializers.ModelSerializer):
                 favorite_thing.ranking += 1
                 favorite_thing.save()
         obj = FavoriteThing.objects.create(**validated_data)
-        AuditLog.objects.create(action_performed='POST', favorite_thing=obj)
+        AuditLog.objects.create(action_performed='Create', favorite_thing=obj)
         return obj
-
-    # def update(self, instance, validated_data):
-    #     FavoriteThing.objects.update(instance, validated_data)
-    #     AuditLog.objects.create(action_performed='PUT', favorite_thing=instance)
-    #     return instance
 
 class MetadataSerializer(serializers.ModelSerializer):
     favorite_thing = serializers.PrimaryKeyRelatedField(queryset=FavoriteThing.objects.all(), write_only=True)

@@ -129,7 +129,7 @@
         <td class="text-xs-left">{{ props.item.category.name }}</td>
         <td class="text-xs-left">{{ props.item.created_date }}</td>
         <td class="text-xs-left">{{ props.item.modified_date }}</td>
-        <td class="text-xs-left">Test</td>
+        <td class="text-xs-left">Logging</td>
         <td class="align-center layout" style="height: 66px;">
           <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
           <v-icon small @click="deleteItem(props.item)">delete</v-icon>
@@ -208,7 +208,11 @@ export default {
       description: "",
       ranking: 0,
       category: "",
-      metadata: "",
+      metadata: {
+        key: '',
+        type: '',
+        value: ''
+      },
       created_date: new Date(),
       modified_date: new Date(),
       audit_log: ""
