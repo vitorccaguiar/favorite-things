@@ -448,7 +448,7 @@ export default {
     saveMetadata(id) {
       try {
         if (this.metadata.key && this.metadata.type && this.metadata.value) {
-          this.setDialogProgress(true, "Saving Metadata...");
+          this.setFavoriteDialogProgress(true, "Saving Metadata...");
           axios({
             method: "post",
             url: "/api/metadata/",
@@ -461,17 +461,17 @@ export default {
             }
           })
             .then(response => {
-              this.setDialogProgress(false, "");
+              this.setFavoriteDialogProgress(false, "");
               this.setSnackbar("Successfuly created the metadata " + response.data.key);
             })
             .catch(error => {
-              this.setDialogProgress(false, "");
+              this.setFavoriteDialogProgress(false, "");
               this.setSnackbar("Failed while creating the metadata");
               console.log(error);
             });
         }
       } catch (error) {
-        this.setDialogProgress(false, "");
+        this.setFavoriteDialogProgress(false, "");
         this.setSnackbar("Failed while creating the metadata");
         console.log(error);
       }
