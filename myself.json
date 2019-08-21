@@ -1,0 +1,28 @@
+{
+  "name": "Vitor Aguiar",
+  "description": [
+    "I am a person who likes challenges, code, help to bring value to the projects I work on",
+    "In my free time I enjoy to play some music, play some games and spend time with my family and friends"
+  ],
+  "job": "Software Engineer",
+  "yearsOfExperience": 4,
+  "skills": [
+    {
+      "name": "JavaScript",
+      "years": 3
+    },
+    {
+      "name": "Angular",
+      "years": 2
+    },
+    {
+      "name": "Git",
+      "years": 3
+    },
+    {
+      "name": "Java",
+      "years": 3
+    }
+  ],
+  "isInterestedInBriteCorePosition": true
+}

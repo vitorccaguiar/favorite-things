@@ -305,6 +305,7 @@ export default {
           .then(response => {
             this.setFavoriteDialogProgress(false, "");
             this.setSnackbar("Successfuly created the favorite thing " + response.data.title);
+            this.saveMetadata(response.data.id);
             this.cleanFields();
             this.favoriteThingDialog = false;
             this.getFavoriteThings();
@@ -442,7 +443,39 @@ export default {
         type: '',
         value: ''
       }
-    }
+    },
+
+    saveMetadata(id) {
+      try {
+        if (this.metadata.key && this.metadata.type && this.metadata.value) {
+          this.setDialogProgress(true, "Saving Metadata...");
+          axios({
+            method: "post",
+            url: "/api/metadata/",
+            headers: { "Content-Type": "application/json" },
+            data: {
+              key: this.metadata.key,
+              type: this.metadata.type,
+              value: this.metadata.value,
+              favorite_thing: id,
+            }
+          })
+            .then(response => {
+              this.setDialogProgress(false, "");
+              this.setSnackbar("Successfuly created the metadata " + response.data.key);
+            })
+            .catch(error => {
+              this.setDialogProgress(false, "");
+              this.setSnackbar("Failed while creating the metadata");
+              console.log(error);
+            });
+        }
+      } catch (error) {
+        this.setDialogProgress(false, "");
+        this.setSnackbar("Failed while creating the metadata");
+        console.log(error);
+      }
+    },
   },
 };
 </script>
