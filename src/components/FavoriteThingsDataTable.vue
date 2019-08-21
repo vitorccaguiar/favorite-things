@@ -447,16 +447,18 @@ export default {
 
     saveMetadata(id) {
       try {
-        if (this.metadata.key && this.metadata.type && this.metadata.value) {
+        if (this.editedItem.metadata.key &&
+            this.editedItem.metadata.type &&
+            this.editedItem.metadata.value) {
           this.setFavoriteDialogProgress(true, "Saving Metadata...");
           axios({
             method: "post",
             url: "/api/metadata/",
             headers: { "Content-Type": "application/json" },
             data: {
-              key: this.metadata.key,
-              type: this.metadata.type,
-              value: this.metadata.value,
+              key: this.editedItem.metadata.key,
+              type: this.editedItem.metadata.type,
+              value: this.editedItem.metadata.value,
               favorite_thing: id,
             }
           })
