@@ -341,6 +341,8 @@ export default {
         .then(response => {
           this.setFavoriteDialogProgress(false, "");
           this.setSnackbar("Successfuly updated the favorite thing " + response.data.title);
+          this.saveMetadata(response.data.id);
+          this.cleanFields();
           this.favoriteThingDialog = false;
           this.update = false;
           this.editedIndex = -1;
@@ -447,9 +449,9 @@ export default {
 
     saveMetadata(id) {
       try {
-        if (this.editedItem.metadata.key &&
-            this.editedItem.metadata.type &&
-            this.editedItem.metadata.value) {
+        if (this.editedItem.metadata.key === '' &&
+            this.editedItem.metadata.type === '' &&
+            this.editedItem.metadata.value === '') {
           this.setFavoriteDialogProgress(true, "Saving Metadata...");
           axios({
             method: "post",
