@@ -407,7 +407,7 @@ export default {
       this.getCategories();
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.editItem.metadata = Object.assign({}, item.metadata);
+      console.log(this.editItem);
       this.favoriteThingDialog = true;
       this.update = true;
       this.editedItem.id = item.id;
@@ -468,7 +468,6 @@ export default {
                 value: ''
               }
               this.setFavoriteDialogProgress(false, "");
-              this.setSnackbar("Successfuly created the metadata " + response.data.key);
             })
             .catch(error => {
               this.setFavoriteDialogProgress(false, "");
