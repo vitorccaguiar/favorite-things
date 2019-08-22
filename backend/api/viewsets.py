@@ -15,8 +15,11 @@ class MetadataViewSet(viewsets.ModelViewSet):
     serializer_class = MetadataSerializer
 
     def get_queryset(self):
-        favorite_thing = self.request.query_params.get('favorite_thing')
-        return Metadata.objects.all().filter(favorite_thing__id=favorite_thing)
+        if 'favorite_thing' in self.request.QUERY_PARAMS:
+            favorite_thing = self.request.query_params.get('favorite_thing')
+            return Metadata.objects.all().filter(favorite_thing__id=favorite_thing)
+        else:
+            return Metadata.objects.all()
 
 class AuditLogViewSet(viewsets.ModelViewSet):
     queryset = AuditLog.objects.all()

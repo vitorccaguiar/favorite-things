@@ -404,7 +404,6 @@ export default {
     },
 
     editItem(item) {
-      console.log(item);
       this.getCategories();
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -413,7 +412,6 @@ export default {
         type: '',
         value: ''
       }
-      console.log(this.editedItem);
       this.favoriteThingDialog = true;
       this.update = true;
       this.editedItem.id = item.id;
@@ -451,7 +449,7 @@ export default {
 
     saveMetadata(id) {
       try {
-        if (this.editItem.metadata &&
+        if (this.editedItem.metadata &&
             this.editedItem.metadata.key &&
             this.editedItem.metadata.type &&
             this.editedItem.metadata.value) {
