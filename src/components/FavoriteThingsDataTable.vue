@@ -404,6 +404,7 @@ export default {
     },
 
     editItem(item) {
+      console.log(item);
       this.getCategories();
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
