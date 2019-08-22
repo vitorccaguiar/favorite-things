@@ -407,7 +407,8 @@ export default {
     editItem(item) {
       this.getCategories();
       this.editedIndex = this.favoriteThings.indexOf(item);
-      this.editedItem = item;
+      this.editedItem = Object.assign({}, item);
+      this.editItem.metadata = Object.assign({}, item.metadata);
       this.favoriteThingDialog = true;
       this.update = true;
       this.editedItem.id = item.id;
