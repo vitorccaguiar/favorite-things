@@ -408,7 +408,7 @@ export default {
       this.getCategories();
       this.editedIndex = this.favoriteThings.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.editItem.metadata = {
+      this.editedItem.metadata = {
         key: '',
         type: '',
         value: ''
