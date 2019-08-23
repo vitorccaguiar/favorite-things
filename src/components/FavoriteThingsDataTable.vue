@@ -308,6 +308,11 @@ export default {
             this.setSnackbar("Successfuly created the favorite thing " + response.data.title);
             this.saveMetadata(response.data.id);
             this.cleanFields();
+            this.editedItem.metadata = {
+              key: '',
+              type: '',
+              value: ''
+            }
             this.favoriteThingDialog = false;
             this.getFavoriteThings();
           })
@@ -466,7 +471,7 @@ export default {
             }
           })
             .then(response => {
-              this.editItem.metadata = {
+              this.editedItem.metadata = {
                 key: '',
                 type: '',
                 value: ''
