@@ -18,4 +18,4 @@ Was not really needed to use a specific feature from JavaScript or Python but I 
 
 ### How would you track down performance issue in production? Have you ever had to do this?
 
-I would use some tool like Kibana. I helped once to configure the Kibana for a legacy system that was having performance issues. After that we identified some methods that were not well implemented and the client was calling it a lot, then we put effort to refactor them. Also was possible to see when the system was about to shutdown and take actions beforehand to avoid that.
+I would use some solution like Kibana + Elasticsearch + Logstash. I helped once to configure those for a legacy system that was having performance issues. After that we identified some methods that were not well implemented and the client was calling it a lot, then we put effort to refactor them. Also was possible to see when the system was about to shutdown and take actions beforehand to avoid that. The Logstash colleted the logs from the system and converted to something meaningful, the output was added into the elasticsearch and the Kibana was configured to use the elasticsearch.
